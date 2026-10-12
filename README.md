@@ -77,6 +77,13 @@ python manage.py runserver 0.0.0.0:8000
 - **Health Check:** `http://localhost:8000/api/health/` &rarr; `{"status": "ok"}`
 - **Interactive Dealer Portal:** `http://localhost:8000/` or `http://localhost:8000/portal/`
 
+### 6. Or Run with Docker Compose (All-in-One)
+To run the Django app, local PostgreSQL 16 database, and supplier mock service together in isolated Docker containers:
+```bash
+docker compose up --build
+```
+This automatically runs migrations, seeds 600 catalogue parts and 25 dealers, starts the mock supplier on port 8099, and serves the DealerDesk portal on `http://localhost:8000`.
+
 ---
 
 ## 4. Running the Tests

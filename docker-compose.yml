@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: dealerdesk_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dealerdesk
+      POSTGRES_USER: dealerdesk
+      POSTGRES_PASSWORD: dealerdesk_secret_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dealerdesk -d dealerdesk"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  supplier_mock:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dealerdesk_supplier_mock
+    restart: unless-stopped
+    command: ["python", "supplier_mock/mock_supplier.py"]
+    ports:
+      - "8099:8099"
+    environment:
+      - PORT=8099
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dealerdesk_django_app
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py seed_data &&
+             python manage.py runserver 0.0.0.0:8000 --noreload"
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://dealerdesk:dealerdesk_secret_password@db:5432/dealerdesk
+      - SUPPLIER_API_URL=http://supplier_mock:8099
+      - SUPPLIER_API_KEY=dev-supplier-key
+      - DJANGO_SECRET_KEY=vikmo-docker-production-secret-key-12345
+    depends_on:
+      db:
+        condition: service_healthy
+      supplier_mock:
+        condition: service_started
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data:
