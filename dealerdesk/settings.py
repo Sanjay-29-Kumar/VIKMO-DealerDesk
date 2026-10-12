@@ -26,12 +26,17 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "corsheaders",
     "core",
-    # add your apps here
+    "products",
+    "dealers",
+    "orders",
+    "supplier_sync",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -39,6 +44,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "dealerdesk.urls"
 
@@ -82,6 +89,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
     "UNAUTHENTICATED_USER": None,
+    "DEFAULT_PAGINATION_CLASS": "core.pagination.StandardPagination",
+    "PAGE_SIZE": 20,
+    "EXCEPTION_HANDLER": "core.exceptions.custom_exception_handler",
 }
 
 # ---- Assignment settings --------------------------------------------------------------
