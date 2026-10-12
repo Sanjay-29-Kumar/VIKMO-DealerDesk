@@ -3,1147 +3,2289 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VIKMO DealerDesk — Auto Parts Distribution & Ordering OS</title>
+  <title>VIKMO DealerDesk — Resource & Ordering OS</title>
+  
+  <!-- Original Fonts: Inter + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
+    /* =========================================================================
+       DESIGN SYSTEM: Matte Obsidian + DRI Orange Accent (Dark & Light Themes)
+       ========================================================================= */
     :root {
-      --bg-dark: #0B0F19;
-      --card-bg: rgba(22, 30, 49, 0.75);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --primary: #3B82F6;
-      --primary-hover: #2563EB;
-      --primary-glow: rgba(59, 130, 246, 0.25);
-      --accent: #10B981;
-      --accent-glow: rgba(16, 185, 129, 0.2);
-      --warning: #F59E0B;
-      --danger: #EF4444;
-      --text-main: #F9FAFB;
-      --text-muted: #9CA3AF;
-      --text-sub: #6B7280;
-      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      /* Dark Theme (Default) */
+      --bg-app: #090D16;
+      --bg-sidebar: #0D111C;
+      --bg-card: #111624;
+      --bg-card-hover: #151C2C;
+      --bg-input: #0B0F1A;
+      --bg-elevated: #161D2E;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.15);
+      --border-active: rgba(249, 115, 22, 0.45);
+
+      /* DRI Warm Orange Palette */
+      --accent-orange: #FF6B35;
+      --accent-orange-bright: #F97316;
+      --accent-orange-hover: #EA580C;
+      --accent-orange-glow: rgba(255, 107, 53, 0.22);
+      --accent-orange-pill: rgba(249, 115, 22, 0.15);
+      --accent-orange-border: rgba(249, 115, 22, 0.38);
+
+      /* Semantic Status Colors */
+      --color-emerald: #10B981;
+      --color-emerald-soft: rgba(16, 185, 129, 0.12);
+      --color-amber: #F59E0B;
+      --color-amber-soft: rgba(245, 158, 11, 0.12);
+      --color-rose: #EF4444;
+      --color-rose-soft: rgba(239, 68, 68, 0.14);
+      --color-blue: #3B82F6;
+      --color-blue-soft: rgba(59, 130, 246, 0.14);
+      --color-purple: #A855F7;
+      --color-purple-soft: rgba(168, 85, 247, 0.14);
+
+      /* Original Typography */
+      --text-bright: #FFFFFF;
+      --text-body: #E2E8F0;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+
+      --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.35);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Light Theme Overrides */
+    body.light-theme {
+      --bg-app: #F8FAFC;
+      --bg-sidebar: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --bg-card-hover: #F1F5F9;
+      --bg-input: #FFFFFF;
+      --bg-elevated: #F8FAFC;
+
+      --border-subtle: #E2E8F0;
+      --border-medium: #CBD5E1;
+      --border-active: rgba(249, 115, 22, 0.6);
+
+      --accent-orange: #EA580C;
+      --accent-orange-bright: #F97316;
+      --accent-orange-hover: #C2410C;
+      --accent-orange-glow: rgba(249, 115, 22, 0.18);
+      --accent-orange-pill: rgba(249, 115, 22, 0.12);
+      --accent-orange-border: rgba(249, 115, 22, 0.38);
+
+      --text-bright: #0F172A;
+      --text-body: #1E293B;
+      --text-muted: #475569;
+      --text-dim: #64748B;
+
+      --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Reset & Base Typography */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: var(--font-sans);
-      background: radial-gradient(circle at 15% 15%, #131E3A 0%, var(--bg-dark) 55%);
-      color: var(--text-main);
+      font-family: var(--font-primary);
+      background-color: var(--bg-app);
+      color: var(--text-body);
       min-height: 100vh;
+      display: flex;
       overflow-x: hidden;
+      letter-spacing: -0.01em;
+      word-spacing: normal;
       line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    /* Top Nav */
-    header {
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--card-border);
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: var(--bg-app); }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); }
+
+    /* =========================================================================
+       SIDEBAR LAYOUT (PERMANENT DOCKED LEFT, MATCHING SAMPLE IMAGE)
+       ========================================================================= */
+    aside.app-sidebar {
+      width: 260px;
+      min-width: 260px;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
       position: sticky;
       top: 0;
       z-index: 50;
-      padding: 0.85rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      user-select: none;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
     }
 
-    .brand {
+    /* Logo Header (Matches Sample DRI Box) */
+    .sidebar-header {
+      padding: 1.35rem 1.25rem;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.9rem;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: border-color 0.25s ease;
     }
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, #3B82F6, #10B981);
-      border-radius: 8px;
+
+    .logo-box {
+      width: 44px;
+      height: 44px;
+      background: #111726;
+      border: 1.5px solid var(--accent-orange-bright);
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: #fff;
-      box-shadow: 0 0 15px var(--primary-glow);
+      color: var(--accent-orange-bright);
+      box-shadow: 0 0 16px var(--accent-orange-glow);
+      flex-shrink: 0;
+      transition: background-color 0.25s ease;
+    }
+    body.light-theme .logo-box {
+      background: #FFF7ED;
+    }
+    .logo-box svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.2;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
     }
     .brand-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
     }
-    .brand-tag {
-      font-size: 0.7rem;
-      background: rgba(59, 130, 246, 0.15);
-      color: var(--primary);
-      padding: 0.15rem 0.5rem;
-      border-radius: 9999px;
-      font-weight: 600;
-      margin-left: 0.5rem;
-      border: 1px solid rgba(59, 130, 246, 0.3);
+    .brand-subtitle {
+      font-size: 0.74rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      margin-top: 0.2rem;
+      letter-spacing: 0.01em;
     }
 
-    .nav-tabs {
+    /* Navigation List */
+    .sidebar-nav {
+      flex: 1;
+      padding: 1.4rem 0.85rem;
+      overflow-y: auto;
       display: flex;
-      gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.25rem;
-      border-radius: 10px;
-      border: 1px solid var(--card-border);
+      flex-direction: column;
+      gap: 1.35rem;
     }
-    .nav-btn {
+
+    .nav-section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0 0.65rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .nav-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+    }
+
+    .nav-item-btn {
+      width: 100%;
       background: transparent;
-      border: none;
+      border: 1px solid transparent;
       color: var(--text-muted);
-      padding: 0.45rem 1rem;
-      border-radius: 7px;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.92rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.85rem;
+      text-align: left;
+      transition: all 0.15s ease-in-out;
+      text-decoration: none;
     }
-    .nav-btn:hover { color: var(--text-main); }
-    .nav-btn.active {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 2px 10px var(--primary-glow);
+    .nav-item-btn:hover {
+      color: var(--text-bright);
+      background: rgba(148, 163, 184, 0.08);
+    }
+    .nav-item-btn svg {
+      width: 19px;
+      height: 19px;
+      stroke-width: 2;
+      flex-shrink: 0;
+      color: var(--text-dim);
+      transition: color 0.15s ease;
+    }
+    .nav-item-btn:hover svg {
+      color: var(--text-bright);
     }
 
-    .dealer-bar {
+    /* Active State (Matches Orange Rounded Pill in Sample) */
+    .nav-item-btn.active {
+      background: var(--accent-orange-pill);
+      border: 1px solid var(--accent-orange-border);
+      color: var(--accent-orange-bright);
+      font-weight: 700;
+      box-shadow: inset 0 0 12px rgba(249, 115, 22, 0.08);
+    }
+    .nav-item-btn.active svg {
+      color: var(--accent-orange-bright);
+    }
+
+    .badge-pill {
+      margin-left: auto;
+      background: rgba(249, 115, 22, 0.2);
+      color: var(--accent-orange-bright);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.1rem 0.5rem;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+    }
+
+    /* =========================================================================
+       SIDEBAR BOTTOM: THEME TOGGLE & NEON STATUS
+       ========================================================================= */
+    .sidebar-bottom-controls {
+      padding: 0.85rem 1rem;
+      border-top: 1px solid var(--border-subtle);
+      background: rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    body.light-theme .sidebar-bottom-controls {
+      background: #F8FAFC;
+    }
+
+    /* Theme Toggle Switch Control */
+    .theme-toggle-control {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-bright);
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+    .theme-toggle-control:hover {
+      border-color: var(--accent-orange-bright);
+    }
+    .theme-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .theme-icon {
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-switch-track {
+      width: 36px;
+      height: 20px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-medium);
+      border-radius: 9999px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .theme-switch-thumb {
+      width: 14px;
+      height: 14px;
+      background: var(--text-dim);
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+    }
+    body.light-theme .theme-switch-track {
+      background: var(--accent-orange-bright);
+      border-color: var(--accent-orange-bright);
+    }
+    body.light-theme .theme-switch-thumb {
+      transform: translateX(16px);
+      background: #FFFFFF;
+    }
+
+    /* Neon Status Dot */
+    .sidebar-footer-box {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.2rem 0.2rem;
+    }
+    .db-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-emerald);
+      box-shadow: 0 0 8px var(--color-emerald);
+      flex-shrink: 0;
+    }
+    .db-status-text {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      line-height: 1.3;
+    }
+    .db-status-text strong {
+      color: var(--text-muted);
+      display: block;
+      font-weight: 600;
+    }
+
+    /* =========================================================================
+       MAIN WORKSPACE WRAPPER & CLEAR TOPBAR
+       ========================================================================= */
+    .app-main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* CLEAR TOPBAR (NO CIRCLE, CLEAN TITLE) */
+    header.app-topbar {
+      background: rgba(13, 17, 28, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.95rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    body.light-theme header.app-topbar {
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom-color: var(--border-subtle);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Page Title (No awkward circle!) */
+    .page-title-badge {
+      display: flex;
+      align-items: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      letter-spacing: -0.015em;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+    }
+
+    /* =========================================================================
+       CUSTOM STYLED DROPDOWNS (WITH ORANGE CHEVRON)
+       ========================================================================= */
+    .dropdown-control,
+    .dealer-select-ctrl {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FF6B35' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+      background-size: 15px;
+      padding: 0.65rem 2.4rem 0.65rem 1rem;
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      background-color: var(--bg-input);
+      color: var(--text-bright);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .dropdown-control:hover,
+    .dealer-select-ctrl:hover {
+      border-color: var(--accent-orange-bright);
+    }
+    .dropdown-control:focus,
+    .dealer-select-ctrl:focus {
+      border-color: var(--accent-orange-bright);
+      box-shadow: 0 0 0 2px var(--accent-orange-glow);
+    }
+    .dropdown-control option,
+    .dealer-select-ctrl option {
+      background: var(--bg-card);
+      color: var(--text-bright);
+      padding: 0.6rem;
+    }
+
+    /* Active Dealer Picker Card */
+    .dealer-picker-card {
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 0.35rem 0.45rem 0.35rem 0.85rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
     }
-    .dealer-select {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 0.4rem 0.75rem;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.85rem;
-      outline: none;
-      cursor: pointer;
+    .dealer-picker-card label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
     }
-    .dealer-select option { background: #161E31; color: #fff; }
+    .dealer-select-ctrl {
+      border: none;
+      background-color: transparent;
+      padding: 0.45rem 2rem 0.45rem 0.4rem;
+      max-width: 300px;
+    }
 
-    .cart-pill {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: var(--accent);
-      padding: 0.4rem 0.85rem;
+    /* Cart Summary Pill */
+    .cart-summary-pill {
+      background: var(--accent-orange-pill);
+      border: 1px solid var(--accent-orange-border);
+      color: var(--accent-orange-bright);
+      padding: 0.5rem 1rem;
       border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.88rem;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
+      gap: 0.55rem;
+      transition: all 0.2s ease;
     }
-    .cart-pill:hover { background: rgba(16, 185, 129, 0.2); }
-
-    /* Main Container */
-    main {
-      max-width: 1400px;
-      margin: 1.5rem auto;
-      padding: 0 1.5rem 3rem 1.5rem;
+    .cart-summary-pill:hover {
+      background: var(--accent-orange-bright);
+      color: #FFFFFF;
+      border-color: var(--accent-orange-bright);
+      box-shadow: 0 0 14px var(--accent-orange-glow);
+    }
+    .cart-counter {
+      background: var(--accent-orange-bright);
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.12rem 0.5rem;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+    }
+    .cart-summary-pill:hover .cart-counter {
+      background: #FFFFFF;
+      color: #000000;
     }
 
-    .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      padding: 2rem 2.25rem;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+    }
 
-    @keyframes fadeIn {
+    .tab-pane { display: none; }
+    .tab-pane.active {
+      display: block;
+      animation: tabFadeSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes tabFadeSlide {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Filters Bar */
-    .filter-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(12px);
-      border-radius: 14px;
-      padding: 1.25rem;
-      margin-bottom: 1.5rem;
+    /* =========================================================================
+       SEARCH, FILTERS & CARDS
+       ========================================================================= */
+    .filter-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.75rem;
       display: flex;
-      gap: 1rem;
+      flex-direction: column;
+      gap: 1.15rem;
+      box-shadow: var(--shadow-card);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    .filter-row-primary {
+      display: flex;
       align-items: center;
+      gap: 1rem;
       flex-wrap: wrap;
     }
-    .search-box {
-      flex: 1;
-      min-width: 260px;
+    .search-input-box {
+      flex: 2;
+      min-width: 280px;
       position: relative;
+      display: flex;
+      align-items: center;
     }
-    .search-input {
+    .search-input-box svg {
+      position: absolute;
+      left: 1rem;
+      width: 18px;
+      height: 18px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+    .search-input-field {
       width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
+      background: var(--bg-input);
+      border: 1px solid var(--border-medium);
+      color: var(--text-bright);
+      padding: 0.7rem 1rem 0.7rem 2.65rem;
       border-radius: 8px;
-      padding: 0.6rem 1rem;
-      color: #fff;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       outline: none;
-      transition: border 0.2s;
+      transition: all 0.2s;
     }
-    .search-input:focus { border-color: var(--primary); }
+    .search-input-field:focus {
+      border-color: var(--accent-orange-bright);
+      box-shadow: 0 0 0 2px var(--accent-orange-glow);
+    }
 
-    .filter-select {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 0.6rem 1rem;
-      color: #fff;
-      font-family: inherit;
-      font-size: 0.9rem;
-      outline: none;
+    .availability-pills {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .filter-tag-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .pill-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 0.4rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s;
     }
-    .filter-select option { background: #161E31; }
+    .pill-btn:hover {
+      color: var(--text-bright);
+      border-color: var(--accent-orange-bright);
+    }
+    .pill-btn.active {
+      background: var(--accent-orange-pill);
+      border-color: var(--accent-orange-bright);
+      color: var(--accent-orange-bright);
+      font-weight: 700;
+    }
 
-    /* Layout Split */
-    .catalogue-layout {
+    /* =========================================================================
+       CATALOGUE GRID & CART DRAWER
+       ========================================================================= */
+    .catalogue-workspace {
       display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 1.5rem;
+      grid-template-columns: 1fr 390px;
+      gap: 1.75rem;
+      align-items: start;
     }
-    @media (max-width: 1024px) {
-      .catalogue-layout { grid-template-columns: 1fr; }
+    @media (max-width: 1180px) {
+      .catalogue-workspace { grid-template-columns: 1fr; }
     }
 
-    /* Product Grid */
-    .product-grid {
+    .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+      gap: 1.35rem;
     }
-    .product-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+
+    /* Product Card */
+    .product-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 1.25rem;
+      padding: 1.45rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease;
+      position: relative;
+      box-shadow: var(--shadow-card);
     }
-    .product-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(59, 130, 246, 0.4);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    .product-box:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-orange-border);
+      box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.35);
     }
-    .prod-header {
+
+    .box-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.5rem;
-    }
-    .prod-sku {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--primary);
-      background: rgba(59, 130, 246, 0.1);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-weight: 600;
-    }
-    .stock-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.2rem 0.5rem;
-      border-radius: 9999px;
-      display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-    }
-    .stock-in { background: rgba(16, 185, 129, 0.15); color: #34D399; }
-    .stock-low { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
-    .stock-out { background: rgba(239, 68, 68, 0.15); color: #F87171; }
-
-    .prod-name {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 0.25rem;
-      line-height: 1.35;
-    }
-    .prod-fitment {
-      font-size: 0.8rem;
-      color: var(--text-muted);
       margin-bottom: 0.85rem;
     }
-    .prod-footer {
+    .sku-tag {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--accent-orange-bright);
+      background: var(--accent-orange-pill);
+      border: 1px solid rgba(249, 115, 22, 0.25);
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      letter-spacing: 0.02em;
+    }
+    .stock-pill {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+    }
+    .stock-pill.in-stock { background: var(--color-emerald-soft); color: var(--color-emerald); }
+    .stock-pill.low-stock { background: var(--color-amber-soft); color: var(--color-amber); }
+    .stock-pill.out-of-stock { background: var(--color-rose-soft); color: var(--color-rose); }
+
+    .box-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 0.45rem;
+      line-height: 1.35;
+    }
+    .box-meta {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.35rem;
+      line-height: 1.5;
+    }
+    .box-meta strong { color: var(--text-muted); font-weight: 600; }
+
+    .box-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 1rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .prod-price {
-      font-size: 1.25rem;
+    .price-unit {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      display: block;
+    }
+    .price-tag {
+      font-family: var(--font-mono);
+      font-size: 1.35rem;
       font-weight: 800;
-      color: #fff;
+      color: var(--text-bright);
+      font-variant-numeric: tabular-nums;
     }
-    .prod-price span { font-size: 0.85rem; font-weight: 600; color: var(--text-sub); }
 
-    .add-cart-btn {
-      background: var(--primary);
+    .btn-add-cart {
+      background: var(--accent-orange-bright);
+      color: #FFFFFF;
       border: none;
-      color: #fff;
-      padding: 0.5rem 0.9rem;
+      padding: 0.6rem 1.15rem;
       border-radius: 8px;
       font-family: inherit;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .add-cart-btn:hover { background: var(--primary-hover); }
-
-    /* Cart Sidebar */
-    .cart-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(12px);
-      border-radius: 14px;
-      padding: 1.5rem;
-      height: fit-content;
-      position: sticky;
-      top: 5rem;
-    }
-    .cart-title {
-      font-size: 1.1rem;
+      font-size: 0.88rem;
       font-weight: 700;
-      margin-bottom: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
+    }
+    .btn-add-cart:hover {
+      background: var(--accent-orange-hover);
+      transform: translateY(-1px);
+    }
+    .btn-add-cart svg { width: 16px; height: 16px; stroke-width: 2.6; }
+
+    /* =========================================================================
+       CART DRAWER CARD
+       ========================================================================= */
+    .cart-drawer-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.65rem;
+      position: sticky;
+      top: 5.8rem;
+      box-shadow: var(--shadow-card);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    .cart-drawer-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.95rem;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 1.15rem;
     }
-    .cart-items {
-      max-height: 340px;
+    .cart-drawer-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--text-bright);
+    }
+    .cart-drawer-title svg { color: var(--accent-orange-bright); }
+
+    .btn-clear-cart {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .btn-clear-cart:hover { color: var(--color-rose); }
+
+    .cart-lines-list {
+      max-height: 330px;
       overflow-y: auto;
-      margin-bottom: 1.25rem;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+      margin-bottom: 1.35rem;
     }
-    .cart-empty {
+    .cart-empty-prompt {
       text-align: center;
-      padding: 2.5rem 1rem;
-      color: var(--text-sub);
+      padding: 2.75rem 1rem;
+      color: var(--text-dim);
       font-size: 0.9rem;
+      line-height: 1.5;
     }
-    .cart-item-row {
+
+    .cart-line-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9px;
+      padding: 0.85rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 0.65rem 0.75rem;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      gap: 0.75rem;
     }
-    .cart-item-name {
-      font-size: 0.85rem;
-      font-weight: 600;
+    .line-title {
+      font-size: 0.88rem;
+      font-weight: 700;
       max-width: 170px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: var(--text-bright);
     }
-    .cart-item-sku {
-      font-size: 0.7rem;
-      color: var(--text-sub);
+    .line-sku-code {
       font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--accent-orange-bright);
+      font-weight: 600;
     }
-    .cart-qty-ctrl {
+
+    .qty-stepper {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
     }
-    .qty-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: #fff;
-      width: 22px;
-      height: 22px;
-      border-radius: 4px;
-      cursor: pointer;
+    .step-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-bright);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
       font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
     }
-    .cart-summary {
-      border-top: 1px solid var(--card-border);
-      padding-top: 1rem;
+    .step-btn:hover {
+      background: var(--accent-orange-bright);
+      color: #FFFFFF;
+      border-color: var(--accent-orange-bright);
+    }
+    .qty-val {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      width: 24px;
+      text-align: center;
+      color: var(--text-bright);
+    }
+
+    .cart-totals-box {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.15rem;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.55rem;
       font-size: 0.9rem;
     }
-    .summary-row {
+    .totals-row {
       display: flex;
       justify-content: space-between;
       color: var(--text-muted);
     }
-    .summary-total {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #fff;
-      margin-top: 0.4rem;
-      padding-top: 0.4rem;
-      border-top: 1px dashed rgba(255, 255, 255, 0.1);
-    }
-
-    .order-action-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #10B981, #059669);
-      border: none;
-      color: #fff;
-      padding: 0.85rem;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 0.95rem;
+    .totals-row strong {
+      font-variant-numeric: tabular-nums;
       font-weight: 700;
-      cursor: pointer;
-      margin-top: 1.25rem;
-      box-shadow: 0 4px 14px var(--accent-glow);
-      transition: all 0.2s;
     }
-    .order-action-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-    .order-action-btn:disabled { background: #374151; cursor: not-allowed; box-shadow: none; }
+    .totals-row.grand-total {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      padding-top: 0.65rem;
+      margin-top: 0.4rem;
+      border-top: 1px dashed var(--border-subtle);
+    }
+    .totals-row.grand-total span:last-child {
+      font-family: var(--font-mono);
+      color: var(--accent-orange-bright);
+      font-variant-numeric: tabular-nums;
+    }
+    .gst-caption {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.2rem;
+      line-height: 1.4;
+    }
 
-    /* Orders Tab */
-    .orders-table-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      overflow: hidden;
+    .btn-submit-draft {
+      width: 100%;
+      background: var(--accent-orange-bright);
+      color: #FFFFFF;
+      border: none;
+      padding: 0.95rem;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 1.35rem;
+      box-shadow: 0 4px 16px var(--accent-orange-glow);
+      transition: all 0.2s ease;
+      letter-spacing: 0.01em;
     }
-    table {
+    .btn-submit-draft:hover {
+      background: var(--accent-orange-hover);
+      transform: translateY(-1px);
+    }
+    .btn-submit-draft:disabled {
+      background: var(--bg-input);
+      color: var(--text-dim);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* =========================================================================
+       DATA TABLES & ORDERS MANAGEMENT
+       ========================================================================= */
+    .table-container-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    .table-toolbar {
+      padding: 1.35rem 1.65rem;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .status-filter-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .status-tab-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 0.4rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .status-tab-btn:hover { color: var(--text-bright); }
+    .status-tab-btn.active {
+      background: var(--accent-orange-bright);
+      color: #FFFFFF;
+      border-color: var(--accent-orange-bright);
+      font-weight: 700;
+    }
+
+    table.data-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
       font-size: 0.9rem;
     }
-    th {
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.85rem 1rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      border-bottom: 1px solid var(--card-border);
-    }
-    td {
-      padding: 0.9rem 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-    tr:hover td { background: rgba(255, 255, 255, 0.02); }
-
-    .status-pill {
-      font-size: 0.75rem;
+    table.data-table th {
+      background: var(--bg-elevated);
+      padding: 1rem 1.35rem;
+      color: var(--text-dim);
       font-weight: 700;
-      padding: 0.25rem 0.6rem;
-      border-radius: 9999px;
-      display: inline-block;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border-subtle);
     }
-    .status-DRAFT { background: rgba(59, 130, 246, 0.15); color: #60A5FA; }
-    .status-CONFIRMED { background: rgba(16, 185, 129, 0.15); color: #34D399; }
-    .status-DISPATCHED { background: rgba(139, 92, 246, 0.15); color: #A78BFA; }
-    .status-DELIVERED { background: rgba(34, 197, 94, 0.25); color: #4ADE80; }
-    .status-CANCELLED { background: rgba(239, 68, 68, 0.15); color: #F87171; }
+    table.data-table td {
+      padding: 1.05rem 1.35rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-body);
+    }
+    table.data-table tr:hover td {
+      background: rgba(148, 163, 184, 0.04);
+    }
 
-    .btn-sm {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--card-border);
-      color: #fff;
-      padding: 0.35rem 0.75rem;
+    .order-state-pill {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.28rem 0.7rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+      letter-spacing: 0.02em;
+    }
+    .state-DRAFT { background: var(--color-blue-soft); color: var(--color-blue); }
+    .state-CONFIRMED { background: var(--color-emerald-soft); color: var(--color-emerald); }
+    .state-DISPATCHED { background: var(--color-purple-soft); color: #9333EA; }
+    body.light-theme .state-DISPATCHED { color: #7E22CE; }
+    .state-DELIVERED { background: rgba(34, 197, 94, 0.18); color: #16A34A; }
+    .state-CANCELLED { background: var(--color-rose-soft); color: var(--color-rose); }
+
+    .btn-action-small {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-bright);
+      padding: 0.45rem 0.9rem;
       border-radius: 6px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
-    .btn-sm:hover { background: rgba(255, 255, 255, 0.15); }
+    .btn-action-small:hover {
+      border-color: var(--accent-orange-bright);
+      color: var(--accent-orange-bright);
+    }
 
-    /* Modal */
+    /* =========================================================================
+       MODAL & 4-STEP PROGRESS STEPPER
+       ========================================================================= */
     .modal-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
       z-index: 100;
       align-items: center;
       justify-content: center;
       padding: 1.5rem;
     }
     .modal-backdrop.active { display: flex; }
-    .modal-box {
-      background: #161E31;
-      border: 1px solid var(--card-border);
+
+    .modal-body-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
       border-radius: 16px;
       width: 100%;
-      max-width: 650px;
+      max-width: 720px;
       max-height: 90vh;
       overflow-y: auto;
-      padding: 1.75rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      padding: 2.25rem;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--card-border);
-    }
-    .modal-close {
+    .modal-close-cross {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
       background: transparent;
       border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
+      color: var(--text-dim);
+      font-size: 1.6rem;
       cursor: pointer;
     }
-    .modal-actions {
+    .modal-close-cross:hover { color: var(--text-bright); }
+
+    /* Stepper */
+    .stepper-track {
       display: flex;
-      gap: 0.75rem;
-      margin-top: 1.5rem;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1.75rem 0 2rem 0;
+      position: relative;
     }
-
-    /* Supplier Sync & Inventory Forms */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 1.5rem;
+    .stepper-bar-bg {
+      position: absolute;
+      top: 15px;
+      left: 32px;
+      right: 32px;
+      height: 3px;
+      background: var(--border-subtle);
+      z-index: 1;
     }
-    .dash-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 1.75rem;
+    .stepper-bar-fill {
+      height: 100%;
+      background: var(--accent-orange-bright);
+      transition: width 0.35s ease;
     }
-    .dash-card h3 {
-      font-size: 1.15rem;
+    .step-node {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .node-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-input);
+      border: 2px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
       font-weight: 700;
-      margin-bottom: 0.75rem;
+      color: var(--text-dim);
+      transition: all 0.25s ease;
     }
-    .form-group {
-      margin-bottom: 1rem;
+    .step-node.completed .node-circle {
+      background: var(--accent-orange-bright);
+      border-color: var(--accent-orange-bright);
+      color: #FFFFFF;
     }
-    .form-label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 0.35rem;
+    .step-node.current .node-circle {
+      border-color: var(--accent-orange-bright);
+      color: var(--accent-orange-bright);
+      box-shadow: 0 0 12px var(--accent-orange-glow);
     }
-    .form-ctrl {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 0.65rem 0.9rem;
-      color: #fff;
-      font-family: inherit;
+    .node-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+    }
+    .step-node.completed .node-label { color: var(--accent-orange-bright); }
+    .step-node.current .node-label { color: var(--text-bright); }
+
+    /* =========================================================================
+       OPERATIONS CARDS
+       ========================================================================= */
+    .operations-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 2.25rem;
+      max-width: 680px;
+      box-shadow: var(--shadow-card);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    .op-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+      color: var(--text-bright);
+    }
+    .op-title svg { color: var(--accent-orange-bright); }
+    .op-description {
       font-size: 0.9rem;
-      outline: none;
+      color: var(--text-dim);
+      margin-bottom: 1.75rem;
+      line-height: 1.6;
     }
 
-    /* Toasts */
-    .toast-container {
+    .form-group-item { margin-bottom: 1.35rem; }
+    .form-group-item label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.45rem;
+    }
+    .form-input-ctrl {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-medium);
+      color: var(--text-bright);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-input-ctrl:focus {
+      border-color: var(--accent-orange-bright);
+      box-shadow: 0 0 0 2px var(--accent-orange-glow);
+    }
+
+    .sku-quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.65rem;
+    }
+    .sku-chip-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--accent-orange-bright);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .sku-chip-btn:hover {
+      background: var(--accent-orange-pill);
+      border-color: var(--accent-orange-bright);
+    }
+
+    /* Supplier Sync Matrix */
+    .sync-stat-matrix {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+      margin-top: 1.75rem;
+    }
+    .stat-tile {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9px;
+      padding: 1.15rem;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: var(--font-mono);
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-bright);
+    }
+    .stat-lbl {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.35rem;
+    }
+
+    /* =========================================================================
+       CLEAN MINIMAL FOOTER
+       ========================================================================= */
+    footer.app-footer {
+      background: var(--bg-sidebar);
+      border-top: 1px solid var(--border-subtle);
+      padding: 1.15rem 2.25rem;
+      margin-top: auto;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    .footer-minimal {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    /* Toast Overlay */
+    .toast-overlay {
       position: fixed;
       bottom: 2rem;
       right: 2rem;
       z-index: 200;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
-    .toast {
-      background: #1E293B;
-      border: 1px solid var(--card-border);
-      color: #fff;
-      padding: 0.85rem 1.25rem;
+    .toast-item-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      color: var(--text-bright);
+      padding: 0.95rem 1.35rem;
       border-radius: 10px;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 600;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      animation: slideIn 0.25s ease;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.75rem;
+      animation: toastPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    .toast.success { border-color: var(--accent); }
-    .toast.error { border-color: var(--danger); background: #3B1215; }
+    @keyframes toastPop {
+      from { transform: translateY(12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .toast-item-card.success { border-color: var(--accent-orange-bright); }
+    .toast-item-card.error { border-color: var(--color-rose); background: #261014; color: #FFFFFF; }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <header>
-    <div class="brand">
-      <div class="brand-logo">V</div>
+  <!-- =========================================================================
+       SIDEBAR NAVIGATION (PERMANENT DOCKED LEFT, MATCHING SAMPLE IMAGE)
+       ========================================================================= -->
+  <aside id="appSidebar" class="app-sidebar">
+    <!-- Header with DRI-style Logo Box -->
+    <div class="sidebar-header">
+      <div class="logo-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">VIKMO</span>
+        <span class="brand-subtitle">Resource Intelligence</span>
+      </div>
+    </div>
+
+    <!-- Navigation List (4 Core Views) -->
+    <div class="sidebar-nav">
       <div>
-        <div style="display: flex; align-items: center;">
-          <span class="brand-title">DealerDesk</span>
-          <span class="brand-tag">Postgres ACID</span>
-        </div>
-      </div>
-    </div>
+        <div class="nav-section-title">Navigation</div>
+        <div class="nav-items-list">
+          <!-- 1. Overview (4-box Grid Icon) -->
+          <button id="nav-btn-catalogue" class="nav-item-btn active" onclick="navigateSidebar('catalogue')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            <span>Overview</span>
+          </button>
 
-    <nav class="nav-tabs">
-      <button class="nav-btn active" onclick="switchTab('catalogue')">🛒 Catalogue & Cart</button>
-      <button class="nav-btn" onclick="switchTab('orders')">📦 Orders Management</button>
-      <button class="nav-btn" onclick="switchTab('inventory')">🔧 Warehouse Adjuster</button>
-      <button class="nav-btn" onclick="switchTab('sync')">🔄 Supplier Sync</button>
-    </nav>
-
-    <div class="dealer-bar">
-      <span style="font-size: 0.8rem; color: var(--text-muted);">Active Dealer:</span>
-      <select id="dealerSelect" class="dealer-select" onchange="onDealerChange()"></select>
-      <div class="cart-pill" onclick="switchTab('catalogue')">
-        <span>Cart</span>
-        <span id="cartCountBadge" style="background: var(--accent); color: #000; padding: 0.1rem 0.45rem; border-radius: 9999px; font-size: 0.75rem;">0</span>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Views -->
-  <main>
-
-    <!-- Tab 1: Catalogue & Cart -->
-    <section id="tab-catalogue" class="tab-content active">
-      <div class="filter-panel">
-        <div class="search-box">
-          <input type="text" id="searchInput" class="search-input" placeholder="Search by SKU, Part Name, or Brand..." oninput="debounceSearch()">
-        </div>
-        <select id="categoryFilter" class="filter-select" onchange="loadProducts()">
-          <option value="">All Categories (11)</option>
-        </select>
-        <select id="vehicleFilter" class="filter-select" onchange="loadProducts()">
-          <option value="">All Vehicle Fitments</option>
-        </select>
-        <div style="color: var(--text-muted); font-size: 0.85rem;" id="productCountLabel">Loading catalogue...</div>
-      </div>
-
-      <div class="catalogue-layout">
-        <!-- Products Grid -->
-        <div id="productGrid" class="product-grid"></div>
-
-        <!-- Cart Sidebar -->
-        <div class="cart-card">
-          <div class="cart-title">
-            <span>Draft Order Cart</span>
-            <button class="btn-sm" onclick="clearCart()">Clear</button>
-          </div>
-          <div id="cartItemsList" class="cart-items">
-            <div class="cart-empty">Your draft cart is empty.<br>Add parts from the catalogue.</div>
-          </div>
-          <div class="cart-summary">
-            <div class="summary-row">
-              <span>Lines Subtotal</span>
-              <span id="cartSubtotal">₹0.00</span>
-            </div>
-            <div class="summary-row">
-              <span>18% GST (Per-line ROUND_HALF_UP)</span>
-              <span id="cartTax">₹0.00</span>
-            </div>
-            <div class="summary-row summary-total">
-              <span>Grand Total</span>
-              <span id="cartGrandTotal">₹0.00</span>
-            </div>
-          </div>
-          <button id="createDraftBtn" class="order-action-btn" onclick="submitDraftOrder()" disabled>
-            Create DRAFT Order
+          <!-- 2. Orders Management (Invoice / Currency Icon) -->
+          <button id="nav-btn-orders" class="nav-item-btn" onclick="navigateSidebar('orders')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            <span>Orders Management</span>
+            <span id="sidebarOrderBadge" class="badge-pill">0</span>
           </button>
         </div>
       </div>
-    </section>
 
-    <!-- Tab 2: Orders Management -->
-    <section id="tab-orders" class="tab-content">
-      <div class="filter-panel">
-        <div style="font-weight: 700;">Filter Orders by Status:</div>
-        <select id="orderStatusFilter" class="filter-select" onchange="loadOrders()">
-          <option value="">All Statuses</option>
-          <option value="DRAFT">DRAFT</option>
-          <option value="CONFIRMED">CONFIRMED</option>
-          <option value="DISPATCHED">DISPATCHED</option>
-          <option value="DELIVERED">DELIVERED</option>
-          <option value="CANCELLED">CANCELLED</option>
-        </select>
-        <button class="btn-sm" onclick="loadOrders()">Refresh Orders</button>
+      <div>
+        <div class="nav-section-title">Operations</div>
+        <div class="nav-items-list">
+          <!-- 3. Warehouse Adjuster (Clock Circle Tool) -->
+          <button id="nav-btn-inventory" class="nav-item-btn" onclick="navigateSidebar('inventory')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Warehouse Adjuster</span>
+          </button>
+
+          <!-- 4. Supplier Sync Engine (Cloud / Refresh Icon) -->
+          <button id="nav-btn-sync" class="nav-item-btn" onclick="navigateSidebar('sync')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            <span>Supplier Sync Engine</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR BOTTOM: LIGHT/DARK THEME TOGGLE + NEON STATUS -->
+    <div class="sidebar-bottom-controls">
+      <!-- Theme Toggle Switch -->
+      <button id="themeToggleBtn" class="theme-toggle-control" onclick="toggleTheme()" title="Switch Light or Dark Mode">
+        <div class="theme-toggle-left">
+          <span id="themeToggleIcon" class="theme-icon">🌙</span>
+          <span id="themeToggleLabel">Dark Mode</span>
+        </div>
+        <div class="theme-switch-track">
+          <div class="theme-switch-thumb"></div>
+        </div>
+      </button>
+
+      <!-- Neon Status -->
+      <div class="sidebar-footer-box">
+        <div class="db-status-dot"></div>
+        <div class="db-status-text">
+          <strong>Neon PostgreSQL</strong>
+          Connected &middot; Asia/Kolkata
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       MAIN WORKSPACE AREA
+       ========================================================================= -->
+  <div class="app-main-wrapper">
+    <!-- CLEAR TOPBAR (NO CIRCLE, CLEAN HEADER) -->
+    <header class="app-topbar">
+      <div class="topbar-left">
+        <div class="page-title-badge">
+          <span id="currentViewHeading">Overview &amp; Wholesale Catalogue</span>
+        </div>
       </div>
 
-      <div class="orders-table-card">
-        <table>
-          <thead>
-            <tr>
-              <th>Order Number</th>
-              <th>Dealer</th>
-              <th>Status</th>
-              <th>Subtotal</th>
-              <th>GST (18%)</th>
-              <th>Grand Total</th>
-              <th>Created (IST)</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="ordersTableBody">
-            <tr><td colspan="8" style="text-align:center; padding: 2rem;">Loading orders...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+      <div class="topbar-actions">
+        <!-- Active Dealer Dropdown Card with Custom Chevron -->
+        <div class="dealer-picker-card">
+          <label>Active Dealer:</label>
+          <select id="dealerSelectDropdown" class="dealer-select-ctrl" onchange="handleDealerSelectChange()"></select>
+        </div>
 
-    <!-- Tab 3: Warehouse Stock Adjuster -->
-    <section id="tab-inventory" class="tab-content">
-      <div class="dashboard-grid">
-        <div class="dash-card">
-          <h3>Warehouse Stock Count Correction</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">
-            Directly calls <code>PUT /api/inventory/{sku}/</code> with strict validation and audit logging.
+        <!-- Quick Cart Trigger -->
+        <div class="cart-summary-pill" onclick="navigateSidebar('catalogue')">
+          <svg style="width:17px; height:17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span>Cart</span>
+          <span id="cartCountIndicator" class="cart-counter">0</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+
+      <!-- =====================================================================
+           TAB 1: OVERVIEW & CATALOGUE
+           ===================================================================== -->
+      <section id="pane-catalogue" class="tab-pane active">
+        <!-- Search & Custom Styled Dropdowns Filter Card -->
+        <div class="filter-card">
+          <div class="filter-row-primary">
+            <div class="search-input-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="catalogueSearchInput" class="search-input-field" placeholder="Search 600 parts by SKU, Product Name, or Brand..." oninput="debounceSearch()">
+            </div>
+            <!-- Custom Styled Dropdowns with orange chevron -->
+            <select id="filterCategory" class="dropdown-control" onchange="loadCatalogueData()">
+              <option value="">All Categories (11)</option>
+            </select>
+            <select id="filterVehicle" class="dropdown-control" onchange="loadCatalogueData()">
+              <option value="">All Vehicle Fitments</option>
+            </select>
+          </div>
+
+          <!-- Availability Stock Pills -->
+          <div class="availability-pills">
+            <span class="filter-tag-label">Availability:</span>
+            <button class="pill-btn active" onclick="setStockFilter('ALL')">All Parts (600)</button>
+            <button class="pill-btn" onclick="setStockFilter('IN_STOCK')">🟢 In Stock</button>
+            <button class="pill-btn" onclick="setStockFilter('LOW_STOCK')">🟡 Low Stock (&lt; 10)</button>
+            <button class="pill-btn" onclick="setStockFilter('OUT_OF_STOCK')">🔴 Out of Stock</button>
+            <span id="partCountLabel" style="margin-left: auto; font-size: 0.82rem; color: var(--text-dim); font-weight: 600;">Loading parts...</span>
+          </div>
+        </div>
+
+        <!-- Catalogue Layout: Grid + Sticky Cart Drawer -->
+        <div class="catalogue-workspace">
+          <!-- Products Grid -->
+          <div id="productsGrid" class="products-grid">
+            <div style="grid-column: 1/-1; text-align:center; padding: 4rem; color:var(--text-dim);">
+              Connecting to Neon Serverless PostgreSQL...
+            </div>
+          </div>
+
+          <!-- Sticky Cart Drawer -->
+          <div class="cart-drawer-card">
+            <div class="cart-drawer-header">
+              <div class="cart-drawer-title">
+                <svg style="width:19px; height:19px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span>Draft Order Cart</span>
+              </div>
+              <button class="btn-clear-cart" onclick="clearCartItems()">Clear</button>
+            </div>
+
+            <div id="cartLinesContainer" class="cart-lines-list">
+              <div class="cart-empty-prompt">Your draft cart is empty.<br>Add items from the catalogue.</div>
+            </div>
+
+            <!-- Financials Breakdown (Exact GST) -->
+            <div class="cart-totals-box">
+              <div class="totals-row">
+                <span>Lines Subtotal</span>
+                <strong id="cartSubtotalVal" style="font-family:var(--font-mono);">₹0.00</strong>
+              </div>
+              <div class="totals-row">
+                <span>18% GST (CGST 9% + SGST 9%)</span>
+                <strong id="cartTaxVal" style="font-family:var(--font-mono);">₹0.00</strong>
+              </div>
+              <div class="gst-caption">Per-line exact 18% GST with <code>ROUND_HALF_UP</code> (prevents float paise drift).</div>
+              <div class="totals-row grand-total">
+                <span>Grand Total</span>
+                <span id="cartGrandTotalVal">₹0.00</span>
+              </div>
+            </div>
+
+            <button id="btnSubmitDraftOrder" class="btn-submit-draft" onclick="submitDraftOrder()" disabled>
+              Create DRAFT Order
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 2: ORDERS MANAGEMENT
+           ===================================================================== -->
+      <section id="pane-orders" class="tab-pane">
+        <div class="table-container-card">
+          <div class="table-toolbar">
+            <div class="status-filter-group">
+              <button class="status-tab-btn active" onclick="filterOrdersByStatus('')">All Orders</button>
+              <button class="status-tab-btn" onclick="filterOrdersByStatus('DRAFT')">DRAFT</button>
+              <button class="status-tab-btn" onclick="filterOrdersByStatus('CONFIRMED')">CONFIRMED</button>
+              <button class="status-tab-btn" onclick="filterOrdersByStatus('DISPATCHED')">DISPATCHED</button>
+              <button class="status-tab-btn" onclick="filterOrdersByStatus('DELIVERED')">DELIVERED</button>
+              <button class="status-tab-btn" onclick="filterOrdersByStatus('CANCELLED')">CANCELLED</button>
+            </div>
+            <button class="btn-action-small" onclick="loadOrdersData()">
+              Refresh Orders
+            </button>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order Number</th>
+                <th>Dealer</th>
+                <th>Status</th>
+                <th>Subtotal</th>
+                <th>GST (18%)</th>
+                <th>Grand Total</th>
+                <th>Created (IST)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <tr><td colspan="8" style="text-align:center; padding: 3rem; color:var(--text-dim);">Loading orders...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           TAB 3: WAREHOUSE STOCK ADJUSTER
+           ===================================================================== -->
+      <section id="pane-inventory" class="tab-pane">
+        <div class="operations-card">
+          <div class="op-title">
+            <svg style="width:24px; height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Stock Count Correction Tool</span>
+          </div>
+          <p class="op-description">
+            Executes <code>PUT /api/inventory/{sku}/</code>. Updates physical inventory with strict integer verification, atomic row locking, and immutable audit logging.
           </p>
-          <div class="form-group">
-            <label class="form-label">Product SKU</label>
-            <input type="text" id="invSku" class="form-ctrl" placeholder="e.g. BRK-1044">
+
+          <div class="form-group-item">
+            <label>Product SKU</label>
+            <input type="text" id="invSkuField" class="form-input-ctrl" placeholder="Click a SKU below or type (e.g. BRK-1044)" oninput="onSkuLookup()">
+            <div class="sku-quick-tags" id="skuQuickTags"></div>
           </div>
-          <div class="form-group">
-            <label class="form-label">New Available Quantity (Integer &ge; 0)</label>
-            <input type="number" id="invQty" class="form-ctrl" min="0" placeholder="e.g. 50">
+
+          <div class="form-group-item">
+            <label>Current Warehouse Stock</label>
+            <div id="liveStockDisplay" style="font-family:var(--font-mono); font-weight:700; color:var(--text-dim); padding:0.4rem 0;">Select a SKU above</div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Audit Reason</label>
-            <input type="text" id="invReason" class="form-ctrl" placeholder="e.g. Annual physical count verification">
+
+          <div class="form-group-item">
+            <label>New Physical Quantity (Integer &ge; 0)</label>
+            <input type="number" id="invQtyField" class="form-input-ctrl" min="0" placeholder="e.g. 50">
           </div>
-          <button class="order-action-btn" style="background: var(--primary);" onclick="submitInventoryUpdate()">
+
+          <div class="form-group-item">
+            <label>Audit Reason</label>
+            <input type="text" id="invReasonField" class="form-input-ctrl" placeholder="e.g. Annual physical count verification">
+          </div>
+
+          <button class="btn-submit-draft" style="margin-top:0.75rem;" onclick="submitInventoryCorrection()">
             Save Stock Correction
           </button>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Tab 4: Supplier Sync -->
-    <section id="tab-sync" class="tab-content">
-      <div class="dashboard-grid">
-        <div class="dash-card">
-          <h3>Supplier Catalogue Automated Sync</h3>
-          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">
-            Calls <code>POST /api/sync/supplier/</code>. Automatically handles cursor pagination, HTTP 429 Retry-After, 5xx backoff, deduplication, and atomic rollback on failure.
+      <!-- =====================================================================
+           TAB 4: SUPPLIER SYNC
+           ===================================================================== -->
+      <section id="pane-sync" class="tab-pane">
+        <div class="operations-card">
+          <div class="op-title">
+            <svg style="width:24px; height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            <span>Supplier Catalogue Automated Sync</span>
+          </div>
+          <p class="op-description">
+            Executes <code>POST /api/sync/supplier/</code>. Automatically handles cursor pagination, HTTP 429 <code>Retry-After</code> headers, 5xx exponential backoff, SHA-256 updated timestamp deduplication, and atomic all-or-nothing rollback.
           </p>
-          <button id="syncTriggerBtn" class="order-action-btn" style="background: var(--primary);" onclick="triggerSupplierSync()">
+
+          <button id="btnTriggerSupplierSync" class="btn-submit-draft" onclick="triggerSupplierSync()">
             Sync Supplier Catalogue Now
           </button>
-          <div id="syncResultCard" style="display:none; margin-top: 1.5rem; background: rgba(255,255,255,0.03); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--card-border);">
-            <h4 style="margin-bottom: 0.5rem; color: var(--accent);">Sync Finished Successfully</h4>
-            <div id="syncStats" style="font-size: 0.9rem; line-height: 1.8;"></div>
+
+          <!-- Sync Metrics -->
+          <div id="syncMetricsBox" style="display:none; margin-top:2rem;">
+            <div style="font-size:0.8rem; font-weight:700; color:var(--accent-orange-bright); text-transform:uppercase; letter-spacing:0.06em;">Sync Execution Summary</div>
+            <div class="sync-stat-matrix">
+              <div class="stat-tile">
+                <div id="statCreated" class="stat-val" style="color:var(--color-emerald);">0</div>
+                <div class="stat-lbl">Created (Stock 0)</div>
+              </div>
+              <div class="stat-tile">
+                <div id="statUpdated" class="stat-val" style="color:var(--accent-orange-bright);">0</div>
+                <div class="stat-lbl">Updated</div>
+              </div>
+              <div class="stat-tile">
+                <div id="statUnchanged" class="stat-val">0</div>
+                <div class="stat-lbl">Unchanged</div>
+              </div>
+              <div class="stat-tile">
+                <div id="statRejected" class="stat-val" style="color:var(--color-rose);">0</div>
+                <div class="stat-lbl">Rejected</div>
+              </div>
+              <div class="stat-tile">
+                <div id="statPages" class="stat-val">0</div>
+                <div class="stat-lbl">Pages Fetched</div>
+              </div>
+              <div class="stat-tile">
+                <div id="statRequests" class="stat-val">0</div>
+                <div class="stat-lbl">HTTP Requests</div>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
+
+    </div>
+
+    <!-- =======================================================================
+         CLEAN MINIMAL FOOTER
+         ======================================================================= -->
+    <footer class="app-footer">
+      <div class="footer-minimal">
+        <span>VIKMO DealerDesk &mdash; Wholesale Auto Parts Distribution &amp; Ordering OS</span>
+        <span>&copy; 2026 VIKMO Systems Ltd.</span>
       </div>
-    </section>
+    </footer>
+  </div>
 
-  </main>
-
-  <!-- Order Details Modal -->
+  <!-- =========================================================================
+       ORDER DETAILS MODAL WITH PROGRESS STEPPER
+       ========================================================================= -->
   <div id="orderModal" class="modal-backdrop">
-    <div class="modal-box">
-      <div class="modal-header">
-        <div>
-          <h3 id="modalOrderNo" style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono);"></h3>
-          <span id="modalStatusBadge" class="status-pill"></span>
+    <div class="modal-body-card">
+      <button class="modal-close-cross" onclick="closeOrderModal()">&times;</button>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+        <span id="modalOrderNo" style="font-family:var(--font-mono); font-size:1.35rem; font-weight:800; color:var(--accent-orange-bright);"></span>
+        <span id="modalStatusBadge" class="order-state-pill"></span>
+      </div>
+      <div style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1.25rem;">
+        Dealer: <strong id="modalDealerName" style="color:var(--text-bright);"></strong> &middot; Created: <span id="modalOrderDate"></span>
+      </div>
+
+      <!-- Stepper Track -->
+      <div class="stepper-track">
+        <div class="stepper-bar-bg">
+          <div id="stepperFillBar" class="stepper-bar-fill" style="width:0%;"></div>
         </div>
-        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div id="step-DRAFT" class="step-node">
+          <div class="node-circle">1</div>
+          <span class="node-label">Draft</span>
+        </div>
+        <div id="step-CONFIRMED" class="step-node">
+          <div class="node-circle">2</div>
+          <span class="node-label">Confirmed</span>
+        </div>
+        <div id="step-DISPATCHED" class="step-node">
+          <div class="node-circle">3</div>
+          <span class="node-label">Dispatched</span>
+        </div>
+        <div id="step-DELIVERED" class="step-node">
+          <div class="node-circle">4</div>
+          <span class="node-label">Delivered</span>
+        </div>
       </div>
 
-      <div style="margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted);">
-        Dealer: <strong id="modalDealer" style="color: #fff;"></strong> | Date: <span id="modalDate"></span>
-      </div>
+      <!-- Error Shortfall Banner -->
+      <div id="modalShortfallAlert" style="display:none; background:var(--color-rose-soft); border:1px solid var(--color-rose); border-radius:8px; padding:0.9rem 1.15rem; color:var(--color-rose); font-size:0.88rem; font-weight:600; margin-bottom:1.35rem;"></div>
 
-      <div style="border: 1px solid var(--card-border); border-radius: 10px; overflow: hidden; margin-bottom: 1rem;">
-        <table>
+      <!-- Lines Table -->
+      <div style="border:1px solid var(--border-subtle); border-radius:9px; overflow:hidden; margin-bottom:1.35rem;">
+        <table class="data-table">
           <thead>
             <tr>
-              <th>SKU / Name</th>
+              <th>SKU / Product</th>
               <th>Qty</th>
               <th>Unit Price</th>
-              <th>GST (18%)</th>
+              <th>18% GST</th>
               <th>Line Total</th>
             </tr>
           </thead>
-          <tbody id="modalItemsBody"></tbody>
+          <tbody id="modalLineItemsBody"></tbody>
         </table>
       </div>
 
-      <div class="cart-summary" style="font-size: 0.95rem;">
-        <div class="summary-row"><span>Subtotal:</span><strong id="modalSubtotal" style="color:#fff;"></strong></div>
-        <div class="summary-row"><span>Tax Total (18% GST):</span><strong id="modalTax" style="color:#fff;"></strong></div>
-        <div class="summary-row summary-total"><span>Grand Total:</span><strong id="modalGrandTotal" style="color:#fff;"></strong></div>
+      <!-- Totals -->
+      <div class="cart-totals-box">
+        <div class="totals-row"><span>Subtotal:</span><strong id="modalSubtotalVal" style="font-family:var(--font-mono);">₹0.00</strong></div>
+        <div class="totals-row"><span>GST Total (18%):</span><strong id="modalTaxVal" style="font-family:var(--font-mono);">₹0.00</strong></div>
+        <div class="totals-row grand-total"><span>Grand Total:</span><strong id="modalGrandTotalVal" style="color:var(--accent-orange-bright); font-family:var(--font-mono);">₹0.00</strong></div>
       </div>
 
-      <div id="modalActions" class="modal-actions"></div>
+      <!-- Actions Bar -->
+      <div id="modalButtonsBar" style="display:flex; gap:0.85rem; justify-content:flex-end; margin-top:1.75rem;"></div>
     </div>
   </div>
 
-  <!-- Toast Container -->
-  <div id="toastContainer" class="toast-container"></div>
+  <!-- Toast Stack -->
+  <div id="toastStack" class="toast-overlay"></div>
 
-  <!-- Script -->
+  <!-- =========================================================================
+       CLIENT SCRIPT & LOGIC
+       ========================================================================= -->
   <script>
     const API = {
       base: '/api',
-      async get(url) {
-        const res = await fetch(this.base + url);
-        return { ok: res.ok, status: res.status, data: await res.json() };
+      async get(endpoint) {
+        try {
+          const res = await fetch(this.base + endpoint);
+          return { ok: res.ok, status: res.status, data: await res.json() };
+        } catch (err) {
+          return { ok: false, status: 500, data: { error: { message: err.message } } };
+        }
       },
-      async post(url, body, headers = {}) {
-        const res = await fetch(this.base + url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', ...headers },
-          body: body ? JSON.stringify(body) : null
-        });
-        return { ok: res.ok, status: res.status, data: await res.json() };
+      async post(endpoint, body = null, headers = {}) {
+        try {
+          const res = await fetch(this.base + endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', ...headers },
+            body: body ? JSON.stringify(body) : null
+          });
+          return { ok: res.ok, status: res.status, data: await res.json() };
+        } catch (err) {
+          return { ok: false, status: 500, data: { error: { message: err.message } } };
+        }
       },
-      async put(url, body) {
-        const res = await fetch(this.base + url, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-        return { ok: res.ok, status: res.status, data: await res.json() };
+      async put(endpoint, body) {
+        try {
+          const res = await fetch(this.base + endpoint, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+          return { ok: res.ok, status: res.status, data: await res.json() };
+        } catch (err) {
+          return { ok: false, status: 500, data: { error: { message: err.message } } };
+        }
       }
     };
 
-    let dealers = [];
-    let activeDealerId = null;
-    let products = [];
-    let cart = []; // [{sku, name, price, quantity, maxStock}]
+    // State
+    let dealersList = [];
+    let selectedDealerId = 1;
+    let productsList = [];
+    let currentStockFilter = 'ALL';
+    let cartItems = [];
+    let currentOrdersList = [];
     let searchTimer = null;
 
-    // Toast
+    // Light Theme / Dark Theme Toggle (Left Bottom)
+    function toggleTheme() {
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      localStorage.setItem('dealerdesk_theme', isLight ? 'light' : 'dark');
+      applyThemeLabels(isLight);
+      showToast(`Switched to ${isLight ? 'Light' : 'Dark'} Theme`);
+    }
+
+    function applyThemeLabels(isLight) {
+      const icon = document.getElementById('themeToggleIcon');
+      const label = document.getElementById('themeToggleLabel');
+      if (icon) icon.innerText = isLight ? '☀️' : '🌙';
+      if (label) label.innerText = isLight ? 'Light Mode' : 'Dark Mode';
+    }
+
+    // Toast Notification
     function showToast(message, type = 'success') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerHTML = `<span>${type === 'success' ? '✓' : '⚠'}</span> <span>${message}</span>`;
-      container.appendChild(toast);
-      setTimeout(() => toast.remove(), 4000);
+      const stack = document.getElementById('toastStack');
+      const card = document.createElement('div');
+      card.className = `toast-item-card ${type}`;
+      card.innerHTML = `<span>${type === 'success' ? '✓' : '⚠'}</span> <span>${message}</span>`;
+      stack.appendChild(card);
+      setTimeout(() => card.remove(), 4200);
     }
 
-    // Tabs
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById(`tab-${tabId}`).classList.add('active');
-      event?.currentTarget?.classList?.add('active');
+    // Sidebar Navigation
+    function navigateSidebar(paneId) {
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
 
-      if (tabId === 'orders') loadOrders();
-      if (tabId === 'catalogue') loadProducts();
+      const targetPane = document.getElementById(`pane-${paneId}`);
+      const targetNavBtn = document.getElementById(`nav-btn-${paneId}`);
+      if (targetPane) targetPane.classList.add('active');
+      if (targetNavBtn) targetNavBtn.classList.add('active');
+
+      const headings = {
+        catalogue: 'Overview & Wholesale Catalogue',
+        orders: 'Orders Management',
+        inventory: 'Warehouse Stock Adjuster',
+        sync: 'Supplier Catalogue Automated Sync'
+      };
+      document.getElementById('currentViewHeading').innerText = headings[paneId] || 'DealerDesk OS';
+
+      if (paneId === 'catalogue') loadCatalogueData();
+      if (paneId === 'orders') loadOrdersData();
     }
 
-    // Init
+    // App Initialization
     async function init() {
-      await loadDealers();
-      await loadProducts();
+      // Restore Theme preference
+      const savedTheme = localStorage.getItem('dealerdesk_theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        applyThemeLabels(true);
+      } else {
+        applyThemeLabels(false);
+      }
+
+      await loadDealersData();
+      await loadCatalogueData();
+      await loadOrdersData();
     }
 
     // Dealers
-    async function loadDealers() {
+    async function loadDealersData() {
       const { ok, data } = await API.get('/dealers/?page_size=100');
       if (ok && data.results) {
-        dealers = data.results;
-        const select = document.getElementById('dealerSelect');
-        select.innerHTML = dealers.map(d => `<option value="${d.id}">${d.dealer_code} — ${d.name} (${d.city || 'South India'})</option>`).join('');
-        activeDealerId = dealers[0]?.id;
+        dealersList = data.results;
+        const sel = document.getElementById('dealerSelectDropdown');
+        sel.innerHTML = dealersList.map(d => `<option value="${d.id}">${d.dealer_code} &mdash; ${d.name} (${d.city || 'HQ'})</option>`).join('');
+        selectedDealerId = dealersList[0]?.id;
       }
     }
-    function onDealerChange() {
-      activeDealerId = document.getElementById('dealerSelect').value;
-      showToast(`Switched active dealer to Dealer ID ${activeDealerId}`);
+    function handleDealerSelectChange() {
+      selectedDealerId = document.getElementById('dealerSelectDropdown').value;
+      const d = dealersList.find(x => x.id == selectedDealerId);
+      showToast(`Active dealer: ${d?.name || selectedDealerId}`);
     }
 
-    // Products
-    async function loadProducts() {
-      const search = document.getElementById('searchInput').value.trim();
-      const category = document.getElementById('categoryFilter').value;
-      const vehicle = document.getElementById('vehicleFilter').value;
+    // Catalogue
+    async function loadCatalogueData() {
+      const search = document.getElementById('catalogueSearchInput').value.trim();
+      const cat = document.getElementById('filterCategory').value;
+      const veh = document.getElementById('filterVehicle').value;
 
       let qs = '?page_size=60';
       if (search) qs += `&search=${encodeURIComponent(search)}`;
-      if (category) qs += `&category=${encodeURIComponent(category)}`;
-      if (vehicle) qs += `&vehicle=${encodeURIComponent(vehicle)}`;
+      if (cat) qs += `&category=${encodeURIComponent(cat)}`;
+      if (veh) qs += `&vehicle=${encodeURIComponent(veh)}`;
 
       const { ok, data } = await API.get(`/products/${qs}`);
       if (ok && data.results) {
-        products = data.results;
-        document.getElementById('productCountLabel').innerText = `Showing ${products.length} of ${data.count} parts`;
-        populateFilterDropdowns(products);
+        productsList = data.results;
+        document.getElementById('partCountLabel').innerText = `Showing ${productsList.length} of ${data.count} parts`;
+        populateDropdowns(productsList);
+        renderQuickSkuButtons(productsList.slice(0, 10));
         renderProducts();
       }
     }
 
-    function populateFilterDropdowns(list) {
-      const catSelect = document.getElementById('categoryFilter');
-      const vehSelect = document.getElementById('vehicleFilter');
-      if (catSelect.options.length <= 1) {
+    function populateDropdowns(list) {
+      const catSel = document.getElementById('filterCategory');
+      const vehSel = document.getElementById('filterVehicle');
+      if (catSel.options.length <= 1) {
         const cats = [...new Set(list.map(p => p.category))].filter(Boolean).sort();
-        cats.forEach(c => catSelect.add(new Option(c, c)));
+        cats.forEach(c => catSel.add(new Option(c, c)));
       }
-      if (vehSelect.options.length <= 1) {
+      if (vehSel.options.length <= 1) {
         const vehs = [...new Set(list.map(p => p.vehicle_fitment))].filter(Boolean).sort();
-        vehs.forEach(v => vehSelect.add(new Option(v, v)));
+        vehs.forEach(v => vehSel.add(new Option(v, v)));
       }
     }
 
     function debounceSearch() {
       clearTimeout(searchTimer);
-      searchTimer = setTimeout(loadProducts, 300);
+      searchTimer = setTimeout(loadCatalogueData, 300);
+    }
+
+    function setStockFilter(type) {
+      currentStockFilter = type;
+      document.querySelectorAll('.availability-pills .pill-btn').forEach(b => b.classList.remove('active'));
+      event?.currentTarget?.classList?.add('active');
+      renderProducts();
     }
 
     function renderProducts() {
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = products.map(p => {
-        let stockClass = 'stock-in';
-        let stockLabel = `In Stock (${p.stock})`;
-        if (p.stock <= 0) { stockClass = 'stock-out'; stockLabel = 'Out of Stock (0)'; }
-        else if (p.stock < 10) { stockClass = 'stock-low'; stockLabel = `Low Stock (${p.stock})`; }
+      const grid = document.getElementById('productsGrid');
+      let filtered = productsList;
 
-        return `
-          <div class="product-card">
-            <div>
-              <div class="prod-header">
-                <span class="prod-sku">${p.sku}</span>
-                <span class="stock-badge ${stockClass}">● ${stockLabel}</span>
-              </div>
-              <div class="prod-name">${p.name}</div>
-              <div class="prod-fitment">Fitment: <strong>${p.vehicle_fitment}</strong> | Brand: ${p.brand}</div>
-            </div>
-            <div class="prod-footer">
-              <div class="prod-price">₹${p.price}</div>
-              <button class="add-cart-btn" onclick="addToCart('${p.sku}')">Add to Cart</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Cart Functions
-    function addToCart(sku) {
-      const product = products.find(p => p.sku === sku);
-      if (!product) return;
-
-      const existing = cart.find(it => it.sku === sku);
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        cart.push({
-          sku: product.sku,
-          name: product.name,
-          price: parseFloat(product.price),
-          quantity: 1,
-          maxStock: product.stock
-        });
+      if (currentStockFilter === 'IN_STOCK') {
+        filtered = productsList.filter(p => p.stock > 0);
+      } else if (currentStockFilter === 'LOW_STOCK') {
+        filtered = productsList.filter(p => p.stock > 0 && p.stock < 10);
+      } else if (currentStockFilter === 'OUT_OF_STOCK') {
+        filtered = productsList.filter(p => p.stock <= 0);
       }
-      renderCart();
-      showToast(`Added ${product.name} to cart`);
-    }
 
-    function updateCartQty(sku, delta) {
-      const item = cart.find(it => it.sku === sku);
-      if (!item) return;
-      item.quantity += delta;
-      if (item.quantity <= 0) {
-        cart = cart.filter(it => it.sku !== sku);
-      }
-      renderCart();
-    }
-
-    function clearCart() {
-      cart = [];
-      renderCart();
-    }
-
-    function renderCart() {
-      const list = document.getElementById('cartItemsList');
-      const badge = document.getElementById('cartCountBadge');
-      const btn = document.getElementById('createDraftBtn');
-
-      badge.innerText = cart.reduce((acc, it) => acc + it.quantity, 0);
-
-      if (cart.length === 0) {
-        list.innerHTML = `<div class="cart-empty">Your draft cart is empty.<br>Add parts from the catalogue.</div>`;
-        document.getElementById('cartSubtotal').innerText = '₹0.00';
-        document.getElementById('cartTax').innerText = '₹0.00';
-        document.getElementById('cartGrandTotal').innerText = '₹0.00';
-        btn.disabled = true;
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 4rem; color:var(--text-dim);">No parts match the selected filter.</div>`;
         return;
       }
 
-      btn.disabled = false;
-      let subtotal = 0;
-      let taxTotal = 0;
+      grid.innerHTML = filtered.map(p => {
+        let pillClass = 'in-stock';
+        let pillLabel = `● In Stock (${p.stock})`;
+        if (p.stock <= 0) {
+          pillClass = 'out-of-stock';
+          pillLabel = '● Out of Stock (0)';
+        } else if (p.stock < 10) {
+          pillClass = 'low-stock';
+          pillLabel = `● Low Stock (${p.stock})`;
+        }
 
-      list.innerHTML = cart.map(it => {
-        const lineSubtotal = Math.round(it.price * it.quantity * 100) / 100;
-        const lineTax = Math.round(lineSubtotal * 0.18 * 100) / 100;
-        subtotal += lineSubtotal;
-        taxTotal += lineTax;
+        const formattedPrice = Number(p.price).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
         return `
-          <div class="cart-item-row">
+          <div class="product-box">
             <div>
-              <div class="cart-item-name">${it.name}</div>
-              <div class="cart-item-sku">${it.sku} &middot; ₹${it.price.toFixed(2)}</div>
+              <div class="box-header">
+                <span class="sku-tag">${p.sku}</span>
+                <span class="stock-pill ${pillClass}">${pillLabel}</span>
+              </div>
+              <h3 class="box-title">${p.name}</h3>
+              <div class="box-meta">
+                <div>Fitment: <strong>${p.vehicle_fitment}</strong></div>
+                <div>Brand: <strong>${p.brand}</strong> &middot; Category: <strong>${p.category}</strong></div>
+              </div>
             </div>
-            <div class="cart-qty-ctrl">
-              <button class="qty-btn" onclick="updateCartQty('${it.sku}', -1)">&minus;</button>
-              <span style="font-weight:700; font-size:0.85rem; width:18px; text-align:center;">${it.quantity}</span>
-              <button class="qty-btn" onclick="updateCartQty('${it.sku}', 1)">&plus;</button>
+            <div class="box-footer">
+              <div>
+                <span class="price-unit">Wholesale</span>
+                <span class="price-tag">₹${formattedPrice}</span>
+              </div>
+              <button class="btn-add-cart" onclick="addToCart('${p.sku}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
             </div>
           </div>
         `;
       }).join('');
-
-      document.getElementById('cartSubtotal').innerText = `₹${subtotal.toFixed(2)}`;
-      document.getElementById('cartTax').innerText = `₹${taxTotal.toFixed(2)}`;
-      document.getElementById('cartGrandTotal').innerText = `₹${(subtotal + taxTotal).toFixed(2)}`;
     }
 
-    // Submit Draft Order
+    // Cart Management
+    function addToCart(sku) {
+      const p = productsList.find(x => x.sku === sku);
+      if (!p) return;
+
+      const existing = cartItems.find(x => x.sku === sku);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cartItems.push({
+          sku: p.sku,
+          name: p.name,
+          unit_price: parseFloat(p.price),
+          quantity: 1
+        });
+      }
+      showToast(`Added ${p.name} to draft cart`);
+      renderCart();
+    }
+
+    function updateCartQty(sku, delta) {
+      const item = cartItems.find(x => x.sku === sku);
+      if (!item) return;
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        cartItems = cartItems.filter(x => x.sku !== sku);
+      }
+      renderCart();
+    }
+
+    function clearCartItems() {
+      cartItems = [];
+      renderCart();
+      showToast('Draft cart cleared');
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartLinesContainer');
+      const countPill = document.getElementById('cartCountIndicator');
+      const submitBtn = document.getElementById('btnSubmitDraftOrder');
+
+      const totalItems = cartItems.reduce((acc, x) => acc + x.quantity, 0);
+      countPill.innerText = totalItems;
+
+      if (cartItems.length === 0) {
+        container.innerHTML = `<div class="cart-empty-prompt">Your draft cart is empty.<br>Add items from the catalogue.</div>`;
+        document.getElementById('cartSubtotalVal').innerText = '₹0.00';
+        document.getElementById('cartTaxVal').innerText = '₹0.00';
+        document.getElementById('cartGrandTotalVal').innerText = '₹0.00';
+        submitBtn.disabled = true;
+        return;
+      }
+
+      container.innerHTML = cartItems.map(item => `
+        <div class="cart-line-card">
+          <div>
+            <div class="line-title">${item.name}</div>
+            <div class="line-sku-code">${item.sku} &middot; ₹${item.unit_price.toFixed(2)}</div>
+          </div>
+          <div class="qty-stepper">
+            <button class="step-btn" onclick="updateCartQty('${item.sku}', -1)">&minus;</button>
+            <span class="qty-val">${item.quantity}</span>
+            <button class="step-btn" onclick="updateCartQty('${item.sku}', 1)">&plus;</button>
+          </div>
+        </div>
+      `).join('');
+
+      let subtotal = 0;
+      let totalTax = 0;
+      cartItems.forEach(item => {
+        const lineSubtotal = Math.round(item.quantity * item.unit_price * 100) / 100;
+        const lineTax = Math.round(lineSubtotal * 0.18 * 100) / 100;
+        subtotal += lineSubtotal;
+        totalTax += lineTax;
+      });
+
+      const grandTotal = Math.round((subtotal + totalTax) * 100) / 100;
+
+      document.getElementById('cartSubtotalVal').innerText = `₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('cartTaxVal').innerText = `₹${totalTax.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('cartGrandTotalVal').innerText = `₹${grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      submitBtn.disabled = false;
+    }
+
     async function submitDraftOrder() {
-      if (!activeDealerId || cart.length === 0) return;
+      if (cartItems.length === 0) return;
+      const btn = document.getElementById('btnSubmitDraftOrder');
+      btn.disabled = true;
+      btn.innerText = 'Creating DRAFT Order...';
 
       const payload = {
-        dealer_id: parseInt(activeDealerId),
-        items: cart.map(it => ({ sku: it.sku, quantity: it.quantity }))
+        dealer_id: parseInt(selectedDealerId),
+        items: cartItems.map(x => ({ sku: x.sku, quantity: x.quantity }))
       };
 
       const { ok, data } = await API.post('/orders/', payload);
+      btn.disabled = false;
+      btn.innerText = 'Create DRAFT Order';
+
       if (ok) {
-        showToast(`DRAFT Order ${data.order_number} created successfully!`, 'success');
-        clearCart();
-        switchTab('orders');
-        viewOrder(data.order_number);
+        showToast(`DRAFT Order ${data.order_number} Created Successfully!`, 'success');
+        cartItems = [];
+        renderCart();
+        loadOrdersData();
+        openOrderDetailModal(data.order_number);
       } else {
-        const errMsg = data.error?.message || 'Failed to create order';
-        showToast(errMsg, 'error');
+        showToast(data.error?.message || 'Failed to create order', 'error');
       }
     }
 
     // Orders Management
-    async function loadOrders() {
-      const statusFilter = document.getElementById('orderStatusFilter').value;
-      let qs = '?page_size=50';
-      if (statusFilter) qs += `&status=${statusFilter}`;
-
-      const { ok, data } = await API.get(`/orders/${qs}`);
-      const tbody = document.getElementById('ordersTableBody');
-
+    async function loadOrdersData() {
+      const { ok, data } = await API.get('/orders/?page_size=100');
       if (ok && data.results) {
-        if (data.results.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 2rem;">No orders found.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = data.results.map(o => {
-          const dateStr = new Date(o.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-          return `
-            <tr>
-              <td><strong style="font-family:var(--font-mono); color:var(--primary);">${o.order_number}</strong></td>
-              <td>Dealer #${o.dealer_id}</td>
-              <td><span class="status-pill status-${o.status}">${o.status}</span></td>
-              <td>₹${o.subtotal}</td>
-              <td>₹${o.tax_total}</td>
-              <td><strong>₹${o.grand_total}</strong></td>
-              <td style="font-size:0.8rem; color:var(--text-sub);">${dateStr}</td>
-              <td>
-                <button class="btn-sm" onclick="viewOrder('${o.order_number}')">View & Actions</button>
-              </td>
-            </tr>
-          `;
-        }).join('');
+        currentOrdersList = data.results;
+        document.getElementById('sidebarOrderBadge').innerText = currentOrdersList.length;
+        renderOrdersTable(currentOrdersList);
       }
     }
 
-    // View Order Detail Modal
-    async function viewOrder(orderNumber) {
-      const { ok, data: o } = await API.get(`/orders/${orderNumber}/`);
-      if (!ok) return;
+    function filterOrdersByStatus(status) {
+      document.querySelectorAll('.status-tab-btn').forEach(b => b.classList.remove('active'));
+      event?.currentTarget?.classList?.add('active');
 
-      document.getElementById('modalOrderNo').innerText = o.order_number;
-      const badge = document.getElementById('modalStatusBadge');
-      badge.className = `status-pill status-${o.status}`;
-      badge.innerText = o.status;
+      if (!status) {
+        renderOrdersTable(currentOrdersList);
+      } else {
+        renderOrdersTable(currentOrdersList.filter(o => o.status === status));
+      }
+    }
 
-      document.getElementById('modalDealer').innerText = `Dealer ID ${o.dealer_id}`;
-      document.getElementById('modalDate').innerText = new Date(o.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    function renderOrdersTable(orders) {
+      const tbody = document.getElementById('ordersTableBody');
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--text-dim);">No orders found for this status.</td></tr>`;
+        return;
+      }
 
-      document.getElementById('modalItemsBody').innerHTML = o.items.map(it => `
+      tbody.innerHTML = orders.map(o => {
+        const dt = new Date(o.created_at).toLocaleString('en-IN', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        });
+        const subtotalFmt = Number(o.subtotal).toLocaleString('en-IN', { minimumFractionDigits: 2 });
+        const taxFmt = Number(o.tax_total).toLocaleString('en-IN', { minimumFractionDigits: 2 });
+        const totalFmt = Number(o.grand_total).toLocaleString('en-IN', { minimumFractionDigits: 2 });
+
+        return `
+          <tr>
+            <td><strong style="font-family:var(--font-mono); color:var(--accent-orange-bright);">${o.order_number}</strong></td>
+            <td>${o.dealer_name || 'Dealer #' + o.dealer}</td>
+            <td><span class="order-state-pill state-${o.status}">● ${o.status}</span></td>
+            <td style="font-family:var(--font-mono);">₹${subtotalFmt}</td>
+            <td style="font-family:var(--font-mono);">₹${taxFmt}</td>
+            <td style="font-family:var(--font-mono); font-weight:700; color:var(--text-bright);">₹${totalFmt}</td>
+            <td style="font-size:0.8rem; color:var(--text-dim);">${dt}</td>
+            <td>
+              <button class="btn-action-small" onclick="openOrderDetailModal('${o.order_number}')">
+                Manage
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Order Modal & Stepper
+    let activeModalOrder = null;
+
+    async function openOrderDetailModal(orderNumber) {
+      const { ok, data } = await API.get(`/orders/${orderNumber}/`);
+      if (!ok) {
+        showToast('Unable to fetch order details', 'error');
+        return;
+      }
+
+      activeModalOrder = data;
+      document.getElementById('modalOrderNo').innerText = data.order_number;
+      document.getElementById('modalStatusBadge').innerText = `● ${data.status}`;
+      document.getElementById('modalStatusBadge').className = `order-state-pill state-${data.status}`;
+      document.getElementById('modalDealerName').innerText = data.dealer_name || `Dealer #${data.dealer}`;
+      document.getElementById('modalOrderDate').innerText = new Date(data.created_at).toLocaleString('en-IN');
+
+      // Stepper
+      updateStepper(data.status);
+
+      // Shortfall alert
+      const shortfallBox = document.getElementById('modalShortfallAlert');
+      shortfallBox.style.display = 'none';
+
+      // Lines
+      const tbody = document.getElementById('modalLineItemsBody');
+      tbody.innerHTML = data.items.map(i => `
         <tr>
-          <td><strong>${it.sku}</strong><br><span style="font-size:0.75rem; color:var(--text-sub);">${it.name}</span></td>
-          <td style="font-weight:700;">${it.quantity}</td>
-          <td>₹${it.unit_price}</td>
-          <td>₹${it.line_tax}</td>
-          <td><strong>₹${it.line_total}</strong></td>
+          <td><strong style="color:var(--text-bright);">${i.product_name}</strong><br><span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-orange-bright);">${i.sku}</span></td>
+          <td style="font-family:var(--font-mono); font-weight:700;">${i.quantity}</td>
+          <td style="font-family:var(--font-mono);">₹${Number(i.unit_price).toFixed(2)}</td>
+          <td style="font-family:var(--font-mono);">₹${Number(i.tax_amount).toFixed(2)}</td>
+          <td style="font-family:var(--font-mono); font-weight:700; color:var(--text-bright);">₹${Number(i.line_total).toFixed(2)}</td>
         </tr>
       `).join('');
 
-      document.getElementById('modalSubtotal').innerText = `₹${o.subtotal}`;
-      document.getElementById('modalTax').innerText = `₹${o.tax_total}`;
-      document.getElementById('modalGrandTotal').innerText = `₹${o.grand_total}`;
+      document.getElementById('modalSubtotalVal').innerText = `₹${Number(data.subtotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      document.getElementById('modalTaxVal').innerText = `₹${Number(data.tax_total).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      document.getElementById('modalGrandTotalVal').innerText = `₹${Number(data.grand_total).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
 
-      // Dynamic Lifecycle Action Buttons
-      const actions = document.getElementById('modalActions');
-      actions.innerHTML = '';
-
-      if (o.status === 'DRAFT') {
-        actions.innerHTML = `
-          <button class="btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="triggerOrderAction('${o.order_number}', 'cancel')">Cancel Order</button>
-          <button class="btn-sm" style="background:var(--accent); color:#000;" onclick="triggerOrderAction('${o.order_number}', 'confirm')">Confirm Order (Check Stock)</button>
-        `;
-      } else if (o.status === 'CONFIRMED') {
-        actions.innerHTML = `
-          <button class="btn-sm" style="color:var(--danger); border-color:var(--danger);" onclick="triggerOrderAction('${o.order_number}', 'cancel')">Cancel & Restore Stock</button>
-          <button class="btn-sm" style="background:#8B5CF6;" onclick="triggerOrderAction('${o.order_number}', 'dispatch')">Dispatch Order</button>
-        `;
-      } else if (o.status === 'DISPATCHED') {
-        actions.innerHTML = `
-          <button class="btn-sm" style="background:#10B981;" onclick="triggerOrderAction('${o.order_number}', 'deliver')">Mark as Delivered</button>
-        `;
-      }
-
+      renderModalActionButtons(data);
       document.getElementById('orderModal').classList.add('active');
     }
 
-    function closeModal() {
+    function closeOrderModal() {
       document.getElementById('orderModal').classList.remove('active');
+      activeModalOrder = null;
     }
 
-    async function triggerOrderAction(orderNumber, action) {
-      const { ok, data } = await API.post(`/orders/${orderNumber}/${action}/`);
-      if (ok) {
-        showToast(`Order status updated to ${data.status}!`, 'success');
-        viewOrder(orderNumber);
-        loadOrders();
-        loadProducts(); // Update catalogue stocks
+    function updateStepper(status) {
+      const steps = ['DRAFT', 'CONFIRMED', 'DISPATCHED', 'DELIVERED'];
+      const fillBar = document.getElementById('stepperFillBar');
+      const idx = steps.indexOf(status);
+
+      steps.forEach((s, i) => {
+        const node = document.getElementById(`step-${s}`);
+        node.classList.remove('completed', 'current');
+        if (i < idx) node.classList.add('completed');
+        if (i === idx) node.classList.add('current');
+      });
+
+      if (idx === -1) {
+        fillBar.style.width = '0%';
       } else {
-        const errMsg = data.error?.message || 'Action failed.';
-        showToast(errMsg, 'error');
+        const pct = (idx / (steps.length - 1)) * 100;
+        fillBar.style.width = `${pct}%`;
       }
     }
 
-    // Warehouse Stock Update
-    async function submitInventoryUpdate() {
-      const sku = document.getElementById('invSku').value.trim();
-      const qty = document.getElementById('invQty').value;
-      const reason = document.getElementById('invReason').value.trim();
+    function renderModalActionButtons(order) {
+      const container = document.getElementById('modalButtonsBar');
+      container.innerHTML = '';
+
+      if (order.status === 'DRAFT') {
+        container.innerHTML = `
+          <button class="btn-action-small" style="color:var(--color-rose); border-color:var(--color-rose);" onclick="transitionOrderStatus('${order.order_number}', 'cancel')">Cancel Order</button>
+          <button class="btn-submit-draft" style="width:auto; margin:0; padding:0.6rem 1.4rem;" onclick="transitionOrderStatus('${order.order_number}', 'confirm')">Confirm Order (Lock Stock)</button>
+        `;
+      } else if (order.status === 'CONFIRMED') {
+        container.innerHTML = `
+          <button class="btn-submit-draft" style="width:auto; margin:0; padding:0.6rem 1.4rem;" onclick="transitionOrderStatus('${order.order_number}', 'dispatch')">Dispatch Order</button>
+        `;
+      } else if (order.status === 'DISPATCHED') {
+        container.innerHTML = `
+          <button class="btn-submit-draft" style="width:auto; margin:0; padding:0.6rem 1.4rem;" onclick="transitionOrderStatus('${order.order_number}', 'deliver')">Mark Delivered</button>
+        `;
+      } else {
+        container.innerHTML = `<span style="font-size:0.85rem; color:var(--text-dim); padding:0.5rem 0;">Terminal Status reached (${order.status})</span>`;
+      }
+    }
+
+    async function transitionOrderStatus(orderNumber, action) {
+      const headers = {};
+      if (action === 'confirm') {
+        headers['Idempotency-Key'] = `IDEMP-${orderNumber}-${Date.now()}`;
+      }
+
+      const { ok, status, data } = await API.post(`/orders/${orderNumber}/${action}/`, null, headers);
+      if (ok) {
+        showToast(`Order ${orderNumber} is now ${data.status}!`, 'success');
+        loadOrdersData();
+        loadCatalogueData();
+        openOrderDetailModal(orderNumber);
+      } else {
+        const err = data.error || {};
+        if (status === 409 && err.details?.shortfalls) {
+          const sBox = document.getElementById('modalShortfallAlert');
+          sBox.style.display = 'block';
+          sBox.innerHTML = `⚠️ <strong>Cannot Confirm Order: Stock Shortfall!</strong><br>` +
+            err.details.shortfalls.map(s => `• <strong>${s.sku}</strong>: Ordered ${s.requested}, Warehouse Available ${s.available} (Shortfall: ${s.shortfall})`).join('<br>');
+        }
+        showToast(err.message || `Failed to ${action} order`, 'error');
+      }
+    }
+
+    // Warehouse Adjuster Tool
+    function renderQuickSkuButtons(sampleProducts) {
+      const container = document.getElementById('skuQuickTags');
+      if (!container) return;
+      container.innerHTML = sampleProducts.map(p => `
+        <button class="sku-chip-btn" onclick="selectSkuChip('${p.sku}', ${p.stock})">
+          ${p.sku} (${p.stock})
+        </button>
+      `).join('');
+    }
+
+    function selectSkuChip(sku, stock) {
+      document.getElementById('invSkuField').value = sku;
+      document.getElementById('liveStockDisplay').innerHTML = `<span style="color:var(--color-emerald);">Available Stock: ${stock} units</span>`;
+      document.getElementById('invQtyField').focus();
+    }
+
+    function onSkuLookup() {
+      const sku = document.getElementById('invSkuField').value.trim();
+      const p = productsList.find(x => x.sku === sku);
+      if (p) {
+        document.getElementById('liveStockDisplay').innerHTML = `<span style="color:var(--color-emerald);">${p.name} &mdash; Available: ${p.stock} units</span>`;
+      } else {
+        document.getElementById('liveStockDisplay').innerText = 'Unmatched SKU';
+      }
+    }
+
+    async function submitInventoryCorrection() {
+      const sku = document.getElementById('invSkuField').value.trim();
+      const qty = document.getElementById('invQtyField').value;
+      const reason = document.getElementById('invReasonField').value.trim();
 
       if (!sku || qty === '') {
         showToast('Please enter SKU and quantity', 'error');
@@ -1152,15 +2294,13 @@
 
       const { ok, data } = await API.put(`/inventory/${sku}/`, {
         quantity: parseInt(qty),
-        reason: reason || 'Manual adjustment'
+        reason: reason || 'Warehouse stock audit'
       });
 
       if (ok) {
-        showToast(`Stock for ${sku} updated to ${data.quantity}!`, 'success');
-        document.getElementById('invSku').value = '';
-        document.getElementById('invQty').value = '';
-        document.getElementById('invReason').value = '';
-        loadProducts();
+        showToast(`Stock for ${sku} updated to ${data.quantity} units!`, 'success');
+        document.getElementById('invQtyField').value = '';
+        loadCatalogueData();
       } else {
         showToast(data.error?.message || 'Inventory update failed', 'error');
       }
@@ -1168,9 +2308,9 @@
 
     // Supplier Sync
     async function triggerSupplierSync() {
-      const btn = document.getElementById('syncTriggerBtn');
+      const btn = document.getElementById('btnTriggerSupplierSync');
       btn.disabled = true;
-      btn.innerText = 'Syncing Supplier Feed (retrying rate limits)...';
+      btn.innerText = 'Syncing Supplier Feed...';
 
       const { ok, data } = await API.post('/sync/supplier/');
       btn.disabled = false;
@@ -1178,17 +2318,14 @@
 
       if (ok) {
         showToast('Supplier Sync Finished Successfully!', 'success');
-        const card = document.getElementById('syncResultCard');
-        card.style.display = 'block';
-        document.getElementById('syncStats').innerHTML = `
-          <div>&bull; <strong>Created Products (stock=0):</strong> ${data.created}</div>
-          <div>&bull; <strong>Updated Products:</strong> ${data.updated}</div>
-          <div>&bull; <strong>Unchanged Products:</strong> ${data.unchanged}</div>
-          <div>&bull; <strong>Rejected Malformed Items:</strong> ${data.rejected?.length || 0}</div>
-          <div>&bull; <strong>Supplier Pages Fetched:</strong> ${data.pages_fetched}</div>
-          <div>&bull; <strong>Total HTTP Requests Made:</strong> ${data.requests_made}</div>
-        `;
-        loadProducts();
+        document.getElementById('syncMetricsBox').style.display = 'block';
+        document.getElementById('statCreated').innerText = data.created;
+        document.getElementById('statUpdated').innerText = data.updated;
+        document.getElementById('statUnchanged').innerText = data.unchanged;
+        document.getElementById('statRejected').innerText = data.rejected?.length || 0;
+        document.getElementById('statPages').innerText = data.pages_fetched;
+        document.getElementById('statRequests').innerText = data.requests_made;
+        loadCatalogueData();
       } else {
         showToast(data.error?.message || 'Supplier sync failed (HTTP 502)', 'error');
       }
