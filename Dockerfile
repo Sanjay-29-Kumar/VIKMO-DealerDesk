@@ -7,10 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install system runtime dependencies
+# Install system runtime dependencies (curl for container healthchecks)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    libpq-dev \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
@@ -25,5 +23,5 @@ COPY . /app/
 # Expose Django port 8000
 EXPOSE 8000
 
-# Default command matching the run contract
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--noreload"]
+# Default command: automatically run migrations before starting the server
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000 --noreload"]

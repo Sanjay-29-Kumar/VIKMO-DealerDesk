@@ -1,24 +1,18 @@
 version: '3.8'
 
-services:
-  db:
-    image: postgres:16-alpine
-    container_name: dealerdesk_postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: dealerdesk
-      POSTGRES_USER: dealerdesk
-      POSTGRES_PASSWORD: dealerdesk_secret_password
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dealerdesk -d dealerdesk"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+# ==============================================================================
+# VIKMO DealerDesk — Docker Compose Orchestration
+# ==============================================================================
+# By default, running 'docker compose up' starts:
+#   1. supplier_mock (Mock Supplier API on port 8099)
+#   2. web (DealerDesk Django App on port 8000)
+#
+# It automatically reads your hosted Neon PostgreSQL credentials from .env
+# so NO passwords or secret keys are hardcoded in this file.
+# ==============================================================================
 
+services:
+  # Mock Supplier Service (simulates supplier catalog API on port 8099)
   supplier_mock:
     build:
       context: .
@@ -31,30 +25,52 @@ services:
     environment:
       - PORT=8099
 
+  # Main Django Application
   web:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: dealerdesk_django_app
     restart: unless-stopped
+    # Automatically applies any pending database migrations before starting the web server
     command: >
       sh -c "python manage.py migrate --noinput &&
-             python manage.py seed_data &&
              python manage.py runserver 0.0.0.0:8000 --noreload"
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     environment:
-      - DATABASE_URL=postgres://dealerdesk:dealerdesk_secret_password@db:5432/dealerdesk
+      # Inherits DATABASE_URL from .env (Neon Cloud PostgreSQL)
+      - DATABASE_URL=${DATABASE_URL}
       - SUPPLIER_API_URL=http://supplier_mock:8099
-      - SUPPLIER_API_KEY=dev-supplier-key
-      - DJANGO_SECRET_KEY=vikmo-docker-production-secret-key-12345
+      - SUPPLIER_API_KEY=${SUPPLIER_API_KEY:-dev-supplier-key}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-dealerdesk-secret-key-2026}
+      - DJANGO_DEBUG=${DJANGO_DEBUG:-1}
     depends_on:
-      db:
-        condition: service_healthy
-      supplier_mock:
-        condition: service_started
+      - supplier_mock
+
+  # Optional Local PostgreSQL Service (Profile: offline)
+  # Only starts if you explicitly specify '--profile offline'
+  local-db:
+    image: postgres:16-alpine
+    container_name: dealerdesk_local_postgres
+    restart: unless-stopped
+    profiles:
+      - offline
+    environment:
+      POSTGRES_DB: dealerdesk
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
     volumes:
-      - .:/app
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d dealerdesk"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
