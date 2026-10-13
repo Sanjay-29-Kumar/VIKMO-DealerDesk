@@ -1,5 +1,5 @@
-# VIKMO DealerDesk — Automotive Parts Distribution & Ordering OS
-
+# VIKMO DealerDesk Assignment - django
+ 
 **Track:** `django` (Python / Django Software Developer)  
 **Required Parts Implemented:**
 - **Part A1 · Backend Core:** Products, Inventory, Dealers, and Draft Orders REST API
