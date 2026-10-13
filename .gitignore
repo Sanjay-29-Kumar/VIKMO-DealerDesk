@@ -1,11 +1,39 @@
-.env
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Local environments & credentials (never commit secrets)
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
 .venv/
 venv/
 env/
-node_modules/
+ENV/
+
+# Unit test / coverage
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+
+# Local databases (DealerDesk requires PostgreSQL)
+*.sqlite3
+db.sqlite3
+
+# Logs
+*.log
+
+# IDE & Editor artifacts
 .idea/
 .vscode/
-*.sqlite3
+*.swp
+*.swo
+*~
+
+# Operating System artifacts
 .DS_Store
+Thumbs.db
