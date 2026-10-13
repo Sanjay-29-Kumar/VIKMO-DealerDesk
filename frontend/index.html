@@ -1156,8 +1156,15 @@
     }
 
     .state-CONFIRMED {
-      background: var(--color-emerald-soft);
-      color: var(--color-emerald);
+      background: rgba(245, 158, 11, 0.16);
+      color: #F59E0B;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    body.light-theme .state-CONFIRMED {
+      background: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #FCD34D;
     }
 
     .state-DISPATCHED {
@@ -1472,9 +1479,12 @@
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
+      pointer-events: none;
+      max-width: 440px;
     }
 
     .toast-item-card {
+      pointer-events: auto;
       background: var(--bg-card);
       border: 1px solid var(--border-medium);
       color: var(--text-bright);
@@ -1487,6 +1497,7 @@
       align-items: center;
       gap: 0.75rem;
       animation: toastPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.25s ease, transform 0.25s ease;
     }
 
     @keyframes toastPop {
@@ -1787,11 +1798,10 @@
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
-            <span>Stock Count Correction Tool</span>
+            <span>Stock Count Correction</span>
           </div>
           <p class="op-description">
-            Executes <code>PUT /api/inventory/{sku}/</code>. Updates physical inventory with strict integer
-            verification, atomic row locking, and immutable audit logging.
+            Update physical warehouse stock levels with an audit reason.
           </p>
 
           <div class="form-group-item">
@@ -1836,12 +1846,10 @@
               <polyline points="1 20 1 14 7 14" />
               <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
             </svg>
-            <span>Supplier Catalogue Automated Sync</span>
+            <span>Supplier Catalogue Sync</span>
           </div>
           <p class="op-description">
-            Executes <code>POST /api/sync/supplier/</code>. Automatically handles cursor pagination, HTTP 429
-            <code>Retry-After</code> headers, 5xx exponential backoff, SHA-256 updated timestamp deduplication, and
-            atomic all-or-nothing rollback.
+            Fetch and update parts, descriptions, and pricing from the supplier feed.
           </p>
 
           <button id="btnTriggerSupplierSync" class="btn-submit-draft" onclick="triggerSupplierSync()">
@@ -2040,14 +2048,44 @@
       if (label) label.innerText = isLight ? 'Light Mode' : 'Dark Mode';
     }
 
-    // Toast Notification
+    // Toast Notification (Capped & Deduplicated)
     function showToast(message, type = 'success') {
       const stack = document.getElementById('toastStack');
+      if (!stack) return;
+
+      // Deduplicate identical message: increment count if clicked rapidly
+      let count = 1;
+      const existing = Array.from(stack.children).find(c => c.dataset.rawMsg === message);
+      if (existing) {
+        count = (parseInt(existing.dataset.count || '1', 10)) + 1;
+        if (existing._timer) clearTimeout(existing._timer);
+        existing.remove();
+      }
+
+      // Cap maximum simultaneous toasts to 2
+      while (stack.children.length >= 2) {
+        const oldest = stack.firstChild;
+        if (oldest._timer) clearTimeout(oldest._timer);
+        oldest.remove();
+      }
+
       const card = document.createElement('div');
+      card.dataset.rawMsg = message;
+      card.dataset.count = count;
       card.className = `toast-item-card ${type}`;
-      card.innerHTML = `<span>${type === 'success' ? '✓' : '⚠'}</span> <span>${message}</span>`;
+
+      const countBadge = count > 1
+        ? `<span style="background:var(--accent-orange-bright);color:#000;border-radius:12px;padding:2px 8px;font-size:0.75rem;font-weight:800;margin-left:6px;">×${count}</span>`
+        : '';
+
+      card.innerHTML = `<span>${type === 'success' ? '✓' : '⚠'}</span> <span>${message}${countBadge}</span>`;
       stack.appendChild(card);
-      setTimeout(() => card.remove(), 4200);
+
+      card._timer = setTimeout(() => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+        setTimeout(() => card.remove(), 250);
+      }, 2400);
     }
 
     // Sidebar Navigation
@@ -2401,15 +2439,24 @@
 
       // Lines
       const tbody = document.getElementById('modalLineItemsBody');
-      tbody.innerHTML = data.items.map(i => `
-        <tr>
-          <td><strong style="color:var(--text-bright);">${i.product_name}</strong><br><span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-orange-bright);">${i.sku}</span></td>
-          <td style="font-family:var(--font-mono); font-weight:700;">${i.quantity}</td>
-          <td style="font-family:var(--font-mono);">₹${Number(i.unit_price).toFixed(2)}</td>
-          <td style="font-family:var(--font-mono);">₹${Number(i.tax_amount).toFixed(2)}</td>
-          <td style="font-family:var(--font-mono); font-weight:700; color:var(--text-bright);">₹${Number(i.line_total).toFixed(2)}</td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = data.items.map(i => {
+        const prodName = i.name || i.product_name || i.sku;
+        const unitPrice = Number(i.unit_price || 0).toFixed(2);
+        const taxVal = Number(i.line_tax ?? i.tax_amount ?? 0).toFixed(2);
+        const lineTotal = Number(i.line_total || 0).toFixed(2);
+        return `
+          <tr>
+            <td>
+              <strong style="color:var(--text-bright);">${prodName}</strong><br>
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-orange-bright);">${i.sku}</span>
+            </td>
+            <td style="font-family:var(--font-mono); font-weight:700;">${i.quantity}</td>
+            <td style="font-family:var(--font-mono);">₹${unitPrice}</td>
+            <td style="font-family:var(--font-mono);">₹${taxVal}</td>
+            <td style="font-family:var(--font-mono); font-weight:700; color:var(--text-bright);">₹${lineTotal}</td>
+          </tr>
+        `;
+      }).join('');
 
       document.getElementById('modalSubtotalVal').innerText = `₹${Number(data.subtotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
       document.getElementById('modalTaxVal').innerText = `₹${Number(data.tax_total).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
