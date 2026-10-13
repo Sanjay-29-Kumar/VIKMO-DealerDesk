@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VIKMO DealerDesk — Resource & Ordering OS</title>
-  
+
   <!-- Original Fonts: Inter + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <style>
     /* =========================================================================
@@ -52,7 +55,7 @@
       --text-body: #E2E8F0;
       --text-muted: #94A3B8;
       --text-dim: #64748B;
-      
+
       --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
 
@@ -88,7 +91,9 @@
     }
 
     /* Reset & Base Typography */
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -110,10 +115,23 @@
     }
 
     /* Scrollbars */
-    ::-webkit-scrollbar { width: 7px; height: 7px; }
-    ::-webkit-scrollbar-track { background: var(--bg-app); }
-    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); }
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-app);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.25);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.4);
+    }
 
     /* =========================================================================
        SIDEBAR LAYOUT (PERMANENT DOCKED LEFT, MATCHING SAMPLE IMAGE)
@@ -157,9 +175,11 @@
       flex-shrink: 0;
       transition: background-color 0.25s ease;
     }
+
     body.light-theme .logo-box {
       background: #FFF7ED;
     }
+
     .logo-box svg {
       width: 24px;
       height: 24px;
@@ -170,6 +190,7 @@
       display: flex;
       flex-direction: column;
     }
+
     .brand-title {
       font-size: 1.25rem;
       font-weight: 800;
@@ -177,6 +198,7 @@
       letter-spacing: 0.04em;
       line-height: 1.1;
     }
+
     .brand-subtitle {
       font-size: 0.74rem;
       font-weight: 500;
@@ -229,10 +251,12 @@
       transition: all 0.15s ease-in-out;
       text-decoration: none;
     }
+
     .nav-item-btn:hover {
       color: var(--text-bright);
       background: rgba(148, 163, 184, 0.08);
     }
+
     .nav-item-btn svg {
       width: 19px;
       height: 19px;
@@ -241,6 +265,7 @@
       color: var(--text-dim);
       transition: color 0.15s ease;
     }
+
     .nav-item-btn:hover svg {
       color: var(--text-bright);
     }
@@ -253,6 +278,7 @@
       font-weight: 700;
       box-shadow: inset 0 0 12px rgba(249, 115, 22, 0.08);
     }
+
     .nav-item-btn.active svg {
       color: var(--accent-orange-bright);
     }
@@ -280,6 +306,7 @@
       gap: 0.75rem;
       transition: background-color 0.25s ease, border-color 0.25s ease;
     }
+
     body.light-theme .sidebar-bottom-controls {
       background: #F8FAFC;
     }
@@ -302,20 +329,24 @@
       transition: all 0.2s ease;
       outline: none;
     }
+
     .theme-toggle-control:hover {
       border-color: var(--accent-orange-bright);
     }
+
     .theme-toggle-left {
       display: flex;
       align-items: center;
       gap: 0.55rem;
     }
+
     .theme-icon {
       font-size: 1rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
+
     .theme-switch-track {
       width: 36px;
       height: 20px;
@@ -325,6 +356,7 @@
       position: relative;
       transition: all 0.2s ease;
     }
+
     .theme-switch-thumb {
       width: 14px;
       height: 14px;
@@ -335,10 +367,12 @@
       left: 2px;
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
     }
+
     body.light-theme .theme-switch-track {
       background: var(--accent-orange-bright);
       border-color: var(--accent-orange-bright);
     }
+
     body.light-theme .theme-switch-thumb {
       transform: translateX(16px);
       background: #FFFFFF;
@@ -351,6 +385,7 @@
       gap: 0.7rem;
       padding: 0.2rem 0.2rem;
     }
+
     .db-status-dot {
       width: 8px;
       height: 8px;
@@ -359,11 +394,13 @@
       box-shadow: 0 0 8px var(--color-emerald);
       flex-shrink: 0;
     }
+
     .db-status-text {
       font-size: 0.74rem;
       color: var(--text-dim);
       line-height: 1.3;
     }
+
     .db-status-text strong {
       color: var(--text-muted);
       display: block;
@@ -397,6 +434,7 @@
       z-index: 30;
       transition: background-color 0.25s ease, border-color 0.25s ease;
     }
+
     body.light-theme header.app-topbar {
       background: rgba(255, 255, 255, 0.94);
       border-bottom-color: var(--border-subtle);
@@ -448,15 +486,18 @@
       transition: all 0.2s ease;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
+
     .dropdown-control:hover,
     .dealer-select-ctrl:hover {
       border-color: var(--accent-orange-bright);
     }
+
     .dropdown-control:focus,
     .dealer-select-ctrl:focus {
       border-color: var(--accent-orange-bright);
       box-shadow: 0 0 0 2px var(--accent-orange-glow);
     }
+
     .dropdown-control option,
     .dealer-select-ctrl option {
       background: var(--bg-card);
@@ -476,6 +517,7 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       transition: background-color 0.25s ease, border-color 0.25s ease;
     }
+
     .dealer-picker-card label {
       font-size: 0.74rem;
       font-weight: 700;
@@ -484,6 +526,7 @@
       letter-spacing: 0.06em;
       white-space: nowrap;
     }
+
     .dealer-select-ctrl {
       border: none;
       background-color: transparent;
@@ -506,12 +549,14 @@
       gap: 0.55rem;
       transition: all 0.2s ease;
     }
+
     .cart-summary-pill:hover {
       background: var(--accent-orange-bright);
       color: #FFFFFF;
       border-color: var(--accent-orange-bright);
       box-shadow: 0 0 14px var(--accent-orange-glow);
     }
+
     .cart-counter {
       background: var(--accent-orange-bright);
       color: #FFFFFF;
@@ -521,6 +566,7 @@
       border-radius: 9999px;
       font-family: var(--font-mono);
     }
+
     .cart-summary-pill:hover .cart-counter {
       background: #FFFFFF;
       color: #000000;
@@ -535,14 +581,25 @@
       margin: 0 auto;
     }
 
-    .tab-pane { display: none; }
+    .tab-pane {
+      display: none;
+    }
+
     .tab-pane.active {
       display: block;
       animation: tabFadeSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     @keyframes tabFadeSlide {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* =========================================================================
@@ -560,12 +617,14 @@
       box-shadow: var(--shadow-card);
       transition: background-color 0.25s ease, border-color 0.25s ease;
     }
+
     .filter-row-primary {
       display: flex;
       align-items: center;
       gap: 1rem;
       flex-wrap: wrap;
     }
+
     .search-input-box {
       flex: 2;
       min-width: 280px;
@@ -573,6 +632,7 @@
       display: flex;
       align-items: center;
     }
+
     .search-input-box svg {
       position: absolute;
       left: 1rem;
@@ -581,6 +641,7 @@
       color: var(--text-dim);
       pointer-events: none;
     }
+
     .search-input-field {
       width: 100%;
       background: var(--bg-input);
@@ -593,6 +654,7 @@
       outline: none;
       transition: all 0.2s;
     }
+
     .search-input-field:focus {
       border-color: var(--accent-orange-bright);
       box-shadow: 0 0 0 2px var(--accent-orange-glow);
@@ -606,6 +668,7 @@
       padding-top: 0.85rem;
       border-top: 1px solid var(--border-subtle);
     }
+
     .filter-tag-label {
       font-size: 0.75rem;
       font-weight: 700;
@@ -613,6 +676,7 @@
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
+
     .pill-btn {
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
@@ -624,10 +688,12 @@
       cursor: pointer;
       transition: all 0.2s;
     }
+
     .pill-btn:hover {
       color: var(--text-bright);
       border-color: var(--accent-orange-bright);
     }
+
     .pill-btn.active {
       background: var(--accent-orange-pill);
       border-color: var(--accent-orange-bright);
@@ -644,8 +710,11 @@
       gap: 1.75rem;
       align-items: start;
     }
+
     @media (max-width: 1180px) {
-      .catalogue-workspace { grid-template-columns: 1fr; }
+      .catalogue-workspace {
+        grid-template-columns: 1fr;
+      }
     }
 
     .products-grid {
@@ -667,6 +736,7 @@
       position: relative;
       box-shadow: var(--shadow-card);
     }
+
     .product-box:hover {
       transform: translateY(-2px);
       border-color: var(--accent-orange-border);
@@ -679,6 +749,7 @@
       align-items: center;
       margin-bottom: 0.85rem;
     }
+
     .sku-tag {
       font-family: var(--font-mono);
       font-size: 0.76rem;
@@ -690,15 +761,28 @@
       border-radius: 6px;
       letter-spacing: 0.02em;
     }
+
     .stock-pill {
       font-size: 0.74rem;
       font-weight: 700;
       padding: 0.25rem 0.65rem;
       border-radius: 9999px;
     }
-    .stock-pill.in-stock { background: var(--color-emerald-soft); color: var(--color-emerald); }
-    .stock-pill.low-stock { background: var(--color-amber-soft); color: var(--color-amber); }
-    .stock-pill.out-of-stock { background: var(--color-rose-soft); color: var(--color-rose); }
+
+    .stock-pill.in-stock {
+      background: var(--color-emerald-soft);
+      color: var(--color-emerald);
+    }
+
+    .stock-pill.low-stock {
+      background: var(--color-amber-soft);
+      color: var(--color-amber);
+    }
+
+    .stock-pill.out-of-stock {
+      background: var(--color-rose-soft);
+      color: var(--color-rose);
+    }
 
     .box-title {
       font-size: 1.05rem;
@@ -707,13 +791,18 @@
       margin-bottom: 0.45rem;
       line-height: 1.35;
     }
+
     .box-meta {
       font-size: 0.82rem;
       color: var(--text-dim);
       margin-bottom: 1.35rem;
       line-height: 1.5;
     }
-    .box-meta strong { color: var(--text-muted); font-weight: 600; }
+
+    .box-meta strong {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
 
     .box-footer {
       border-top: 1px solid var(--border-subtle);
@@ -722,6 +811,7 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .price-unit {
       font-size: 0.74rem;
       color: var(--text-dim);
@@ -730,6 +820,7 @@
       font-weight: 600;
       display: block;
     }
+
     .price-tag {
       font-family: var(--font-mono);
       font-size: 1.35rem;
@@ -754,11 +845,17 @@
       transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
     }
+
     .btn-add-cart:hover {
       background: var(--accent-orange-hover);
       transform: translateY(-1px);
     }
-    .btn-add-cart svg { width: 16px; height: 16px; stroke-width: 2.6; }
+
+    .btn-add-cart svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.6;
+    }
 
     /* =========================================================================
        CART DRAWER CARD
@@ -773,6 +870,7 @@
       box-shadow: var(--shadow-card);
       transition: background-color 0.25s ease, border-color 0.25s ease;
     }
+
     .cart-drawer-header {
       display: flex;
       justify-content: space-between;
@@ -781,6 +879,7 @@
       border-bottom: 1px solid var(--border-subtle);
       margin-bottom: 1.15rem;
     }
+
     .cart-drawer-title {
       font-size: 1.12rem;
       font-weight: 700;
@@ -789,7 +888,10 @@
       gap: 0.55rem;
       color: var(--text-bright);
     }
-    .cart-drawer-title svg { color: var(--accent-orange-bright); }
+
+    .cart-drawer-title svg {
+      color: var(--accent-orange-bright);
+    }
 
     .btn-clear-cart {
       background: transparent;
@@ -800,7 +902,10 @@
       cursor: pointer;
       text-decoration: underline;
     }
-    .btn-clear-cart:hover { color: var(--color-rose); }
+
+    .btn-clear-cart:hover {
+      color: var(--color-rose);
+    }
 
     .cart-lines-list {
       max-height: 330px;
@@ -810,6 +915,7 @@
       gap: 0.75rem;
       margin-bottom: 1.35rem;
     }
+
     .cart-empty-prompt {
       text-align: center;
       padding: 2.75rem 1rem;
@@ -828,6 +934,7 @@
       align-items: center;
       gap: 0.75rem;
     }
+
     .line-title {
       font-size: 0.88rem;
       font-weight: 700;
@@ -837,6 +944,7 @@
       text-overflow: ellipsis;
       color: var(--text-bright);
     }
+
     .line-sku-code {
       font-family: var(--font-mono);
       font-size: 0.74rem;
@@ -849,6 +957,7 @@
       align-items: center;
       gap: 0.4rem;
     }
+
     .step-btn {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
@@ -863,11 +972,13 @@
       justify-content: center;
       transition: all 0.15s ease;
     }
+
     .step-btn:hover {
       background: var(--accent-orange-bright);
       color: #FFFFFF;
       border-color: var(--accent-orange-bright);
     }
+
     .qty-val {
       font-family: var(--font-mono);
       font-size: 0.88rem;
@@ -885,15 +996,18 @@
       gap: 0.55rem;
       font-size: 0.9rem;
     }
+
     .totals-row {
       display: flex;
       justify-content: space-between;
       color: var(--text-muted);
     }
+
     .totals-row strong {
       font-variant-numeric: tabular-nums;
       font-weight: 700;
     }
+
     .totals-row.grand-total {
       font-size: 1.35rem;
       font-weight: 800;
@@ -902,11 +1016,13 @@
       margin-top: 0.4rem;
       border-top: 1px dashed var(--border-subtle);
     }
+
     .totals-row.grand-total span:last-child {
       font-family: var(--font-mono);
       color: var(--accent-orange-bright);
       font-variant-numeric: tabular-nums;
     }
+
     .gst-caption {
       font-size: 0.75rem;
       color: var(--text-dim);
@@ -930,10 +1046,12 @@
       transition: all 0.2s ease;
       letter-spacing: 0.01em;
     }
+
     .btn-submit-draft:hover {
       background: var(--accent-orange-hover);
       transform: translateY(-1px);
     }
+
     .btn-submit-draft:disabled {
       background: var(--bg-input);
       color: var(--text-dim);
@@ -953,6 +1071,7 @@
       box-shadow: var(--shadow-card);
       transition: background-color 0.25s ease, border-color 0.25s ease;
     }
+
     .table-toolbar {
       padding: 1.35rem 1.65rem;
       border-bottom: 1px solid var(--border-subtle);
@@ -962,11 +1081,13 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
+
     .status-filter-group {
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
     }
+
     .status-tab-btn {
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
@@ -978,7 +1099,11 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .status-tab-btn:hover { color: var(--text-bright); }
+
+    .status-tab-btn:hover {
+      color: var(--text-bright);
+    }
+
     .status-tab-btn.active {
       background: var(--accent-orange-bright);
       color: #FFFFFF;
@@ -992,6 +1117,7 @@
       text-align: left;
       font-size: 0.9rem;
     }
+
     table.data-table th {
       background: var(--bg-elevated);
       padding: 1rem 1.35rem;
@@ -1002,11 +1128,13 @@
       letter-spacing: 0.06em;
       border-bottom: 1px solid var(--border-subtle);
     }
+
     table.data-table td {
       padding: 1.05rem 1.35rem;
       border-bottom: 1px solid var(--border-subtle);
       color: var(--text-body);
     }
+
     table.data-table tr:hover td {
       background: rgba(148, 163, 184, 0.04);
     }
@@ -1021,12 +1149,35 @@
       gap: 0.38rem;
       letter-spacing: 0.02em;
     }
-    .state-DRAFT { background: var(--color-blue-soft); color: var(--color-blue); }
-    .state-CONFIRMED { background: var(--color-emerald-soft); color: var(--color-emerald); }
-    .state-DISPATCHED { background: var(--color-purple-soft); color: #9333EA; }
-    body.light-theme .state-DISPATCHED { color: #7E22CE; }
-    .state-DELIVERED { background: rgba(34, 197, 94, 0.18); color: #16A34A; }
-    .state-CANCELLED { background: var(--color-rose-soft); color: var(--color-rose); }
+
+    .state-DRAFT {
+      background: var(--color-blue-soft);
+      color: var(--color-blue);
+    }
+
+    .state-CONFIRMED {
+      background: var(--color-emerald-soft);
+      color: var(--color-emerald);
+    }
+
+    .state-DISPATCHED {
+      background: var(--color-purple-soft);
+      color: #9333EA;
+    }
+
+    body.light-theme .state-DISPATCHED {
+      color: #7E22CE;
+    }
+
+    .state-DELIVERED {
+      background: rgba(34, 197, 94, 0.18);
+      color: #16A34A;
+    }
+
+    .state-CANCELLED {
+      background: var(--color-rose-soft);
+      color: var(--color-rose);
+    }
 
     .btn-action-small {
       background: var(--bg-input);
@@ -1039,6 +1190,7 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
+
     .btn-action-small:hover {
       border-color: var(--accent-orange-bright);
       color: var(--accent-orange-bright);
@@ -1058,7 +1210,10 @@
       justify-content: center;
       padding: 1.5rem;
     }
-    .modal-backdrop.active { display: flex; }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
 
     .modal-body-card {
       background: var(--bg-card);
@@ -1072,6 +1227,7 @@
       position: relative;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
+
     .modal-close-cross {
       position: absolute;
       top: 1.5rem;
@@ -1082,7 +1238,10 @@
       font-size: 1.6rem;
       cursor: pointer;
     }
-    .modal-close-cross:hover { color: var(--text-bright); }
+
+    .modal-close-cross:hover {
+      color: var(--text-bright);
+    }
 
     /* Stepper */
     .stepper-track {
@@ -1092,6 +1251,7 @@
       margin: 1.75rem 0 2rem 0;
       position: relative;
     }
+
     .stepper-bar-bg {
       position: absolute;
       top: 15px;
@@ -1101,11 +1261,13 @@
       background: var(--border-subtle);
       z-index: 1;
     }
+
     .stepper-bar-fill {
       height: 100%;
       background: var(--accent-orange-bright);
       transition: width 0.35s ease;
     }
+
     .step-node {
       position: relative;
       z-index: 2;
@@ -1114,6 +1276,7 @@
       align-items: center;
       gap: 0.4rem;
     }
+
     .node-circle {
       width: 32px;
       height: 32px;
@@ -1128,16 +1291,19 @@
       color: var(--text-dim);
       transition: all 0.25s ease;
     }
+
     .step-node.completed .node-circle {
       background: var(--accent-orange-bright);
       border-color: var(--accent-orange-bright);
       color: #FFFFFF;
     }
+
     .step-node.current .node-circle {
       border-color: var(--accent-orange-bright);
       color: var(--accent-orange-bright);
       box-shadow: 0 0 12px var(--accent-orange-glow);
     }
+
     .node-label {
       font-size: 0.74rem;
       font-weight: 700;
@@ -1145,8 +1311,14 @@
       letter-spacing: 0.04em;
       color: var(--text-dim);
     }
-    .step-node.completed .node-label { color: var(--accent-orange-bright); }
-    .step-node.current .node-label { color: var(--text-bright); }
+
+    .step-node.completed .node-label {
+      color: var(--accent-orange-bright);
+    }
+
+    .step-node.current .node-label {
+      color: var(--text-bright);
+    }
 
     /* =========================================================================
        OPERATIONS CARDS
@@ -1160,6 +1332,7 @@
       box-shadow: var(--shadow-card);
       transition: background-color 0.25s ease, border-color 0.25s ease;
     }
+
     .op-title {
       font-size: 1.35rem;
       font-weight: 800;
@@ -1169,7 +1342,11 @@
       margin-bottom: 0.6rem;
       color: var(--text-bright);
     }
-    .op-title svg { color: var(--accent-orange-bright); }
+
+    .op-title svg {
+      color: var(--accent-orange-bright);
+    }
+
     .op-description {
       font-size: 0.9rem;
       color: var(--text-dim);
@@ -1177,7 +1354,10 @@
       line-height: 1.6;
     }
 
-    .form-group-item { margin-bottom: 1.35rem; }
+    .form-group-item {
+      margin-bottom: 1.35rem;
+    }
+
     .form-group-item label {
       display: block;
       font-size: 0.78rem;
@@ -1187,6 +1367,7 @@
       letter-spacing: 0.06em;
       margin-bottom: 0.45rem;
     }
+
     .form-input-ctrl {
       width: 100%;
       background: var(--bg-input);
@@ -1199,6 +1380,7 @@
       outline: none;
       transition: all 0.2s;
     }
+
     .form-input-ctrl:focus {
       border-color: var(--accent-orange-bright);
       box-shadow: 0 0 0 2px var(--accent-orange-glow);
@@ -1210,6 +1392,7 @@
       gap: 0.4rem;
       margin-top: 0.65rem;
     }
+
     .sku-chip-btn {
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
@@ -1221,6 +1404,7 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
+
     .sku-chip-btn:hover {
       background: var(--accent-orange-pill);
       border-color: var(--accent-orange-bright);
@@ -1233,6 +1417,7 @@
       gap: 0.85rem;
       margin-top: 1.75rem;
     }
+
     .stat-tile {
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
@@ -1240,12 +1425,14 @@
       padding: 1.15rem;
       text-align: center;
     }
+
     .stat-val {
       font-family: var(--font-mono);
       font-size: 1.75rem;
       font-weight: 800;
       color: var(--text-bright);
     }
+
     .stat-lbl {
       font-size: 0.74rem;
       font-weight: 700;
@@ -1265,6 +1452,7 @@
       margin-top: auto;
       transition: background-color 0.25s ease, border-color 0.25s ease;
     }
+
     .footer-minimal {
       display: flex;
       align-items: center;
@@ -1285,6 +1473,7 @@
       flex-direction: column;
       gap: 0.6rem;
     }
+
     .toast-item-card {
       background: var(--bg-card);
       border: 1px solid var(--border-medium);
@@ -1299,14 +1488,31 @@
       gap: 0.75rem;
       animation: toastPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     @keyframes toastPop {
-      from { transform: translateY(12px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      from {
+        transform: translateY(12px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
-    .toast-item-card.success { border-color: var(--accent-orange-bright); }
-    .toast-item-card.error { border-color: var(--color-rose); background: #261014; color: #FFFFFF; }
+
+    .toast-item-card.success {
+      border-color: var(--accent-orange-bright);
+    }
+
+    .toast-item-card.error {
+      border-color: var(--color-rose);
+      background: #261014;
+      color: #FFFFFF;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- =========================================================================
@@ -1317,15 +1523,15 @@
     <div class="sidebar-header">
       <div class="logo-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
         </svg>
       </div>
       <div class="brand-text">
         <span class="brand-title">VIKMO</span>
-        <span class="brand-subtitle">Resource Intelligence</span>
+        <span class="brand-subtitle">DealerDesk</span>
       </div>
     </div>
 
@@ -1337,10 +1543,10 @@
           <!-- 1. Overview (4-box Grid Icon) -->
           <button id="nav-btn-catalogue" class="nav-item-btn active" onclick="navigateSidebar('catalogue')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-              <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+              <rect x="3" y="3" width="7" height="7" rx="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="1.5" />
             </svg>
             <span>Overview</span>
           </button>
@@ -1348,7 +1554,7 @@
           <!-- 2. Orders Management (Invoice / Currency Icon) -->
           <button id="nav-btn-orders" class="nav-item-btn" onclick="navigateSidebar('orders')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
             <span>Orders Management</span>
             <span id="sidebarOrderBadge" class="badge-pill">0</span>
@@ -1362,8 +1568,8 @@
           <!-- 3. Warehouse Adjuster (Clock Circle Tool) -->
           <button id="nav-btn-inventory" class="nav-item-btn" onclick="navigateSidebar('inventory')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
             </svg>
             <span>Warehouse Adjuster</span>
           </button>
@@ -1371,9 +1577,9 @@
           <!-- 4. Supplier Sync Engine (Cloud / Refresh Icon) -->
           <button id="nav-btn-sync" class="nav-item-btn" onclick="navigateSidebar('sync')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <polyline points="23 4 23 10 17 10"/>
-              <polyline points="1 20 1 14 7 14"/>
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              <polyline points="23 4 23 10 17 10" />
+              <polyline points="1 20 1 14 7 14" />
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
             </svg>
             <span>Supplier Sync Engine</span>
           </button>
@@ -1384,7 +1590,8 @@
     <!-- SIDEBAR BOTTOM: LIGHT/DARK THEME TOGGLE + NEON STATUS -->
     <div class="sidebar-bottom-controls">
       <!-- Theme Toggle Switch -->
-      <button id="themeToggleBtn" class="theme-toggle-control" onclick="toggleTheme()" title="Switch Light or Dark Mode">
+      <button id="themeToggleBtn" class="theme-toggle-control" onclick="toggleTheme()"
+        title="Switch Light or Dark Mode">
         <div class="theme-toggle-left">
           <span id="themeToggleIcon" class="theme-icon">🌙</span>
           <span id="themeToggleLabel">Dark Mode</span>
@@ -1427,8 +1634,9 @@
         <!-- Quick Cart Trigger -->
         <div class="cart-summary-pill" onclick="navigateSidebar('catalogue')">
           <svg style="width:17px; height:17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
           </svg>
           <span>Cart</span>
           <span id="cartCountIndicator" class="cart-counter">0</span>
@@ -1447,8 +1655,12 @@
         <div class="filter-card">
           <div class="filter-row-primary">
             <div class="search-input-box">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="text" id="catalogueSearchInput" class="search-input-field" placeholder="Search 600 parts by SKU, Product Name, or Brand..." oninput="debounceSearch()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="catalogueSearchInput" class="search-input-field"
+                placeholder="Search 600 parts by SKU, Product Name, or Brand..." oninput="debounceSearch()">
             </div>
             <!-- Custom Styled Dropdowns with orange chevron -->
             <select id="filterCategory" class="dropdown-control" onchange="loadCatalogueData()">
@@ -1466,7 +1678,9 @@
             <button class="pill-btn" onclick="setStockFilter('IN_STOCK')">🟢 In Stock</button>
             <button class="pill-btn" onclick="setStockFilter('LOW_STOCK')">🟡 Low Stock (&lt; 10)</button>
             <button class="pill-btn" onclick="setStockFilter('OUT_OF_STOCK')">🔴 Out of Stock</button>
-            <span id="partCountLabel" style="margin-left: auto; font-size: 0.82rem; color: var(--text-dim); font-weight: 600;">Loading parts...</span>
+            <span id="partCountLabel"
+              style="margin-left: auto; font-size: 0.82rem; color: var(--text-dim); font-weight: 600;">Loading
+              parts...</span>
           </div>
         </div>
 
@@ -1484,8 +1698,9 @@
             <div class="cart-drawer-header">
               <div class="cart-drawer-title">
                 <svg style="width:19px; height:19px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                 </svg>
                 <span>Draft Order Cart</span>
               </div>
@@ -1506,7 +1721,8 @@
                 <span>18% GST (CGST 9% + SGST 9%)</span>
                 <strong id="cartTaxVal" style="font-family:var(--font-mono);">₹0.00</strong>
               </div>
-              <div class="gst-caption">Per-line exact 18% GST with <code>ROUND_HALF_UP</code> (prevents float paise drift).</div>
+              <div class="gst-caption">Per-line exact 18% GST with <code>ROUND_HALF_UP</code> (prevents float paise
+                drift).</div>
               <div class="totals-row grand-total">
                 <span>Grand Total</span>
                 <span id="cartGrandTotalVal">₹0.00</span>
@@ -1553,7 +1769,9 @@
               </tr>
             </thead>
             <tbody id="ordersTableBody">
-              <tr><td colspan="8" style="text-align:center; padding: 3rem; color:var(--text-dim);">Loading orders...</td></tr>
+              <tr>
+                <td colspan="8" style="text-align:center; padding: 3rem; color:var(--text-dim);">Loading orders...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1566,23 +1784,28 @@
         <div class="operations-card">
           <div class="op-title">
             <svg style="width:24px; height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
             </svg>
             <span>Stock Count Correction Tool</span>
           </div>
           <p class="op-description">
-            Executes <code>PUT /api/inventory/{sku}/</code>. Updates physical inventory with strict integer verification, atomic row locking, and immutable audit logging.
+            Executes <code>PUT /api/inventory/{sku}/</code>. Updates physical inventory with strict integer
+            verification, atomic row locking, and immutable audit logging.
           </p>
 
           <div class="form-group-item">
             <label>Product SKU</label>
-            <input type="text" id="invSkuField" class="form-input-ctrl" placeholder="Click a SKU below or type (e.g. BRK-1044)" oninput="onSkuLookup()">
+            <input type="text" id="invSkuField" class="form-input-ctrl"
+              placeholder="Click a SKU below or type (e.g. BRK-1044)" oninput="onSkuLookup()">
             <div class="sku-quick-tags" id="skuQuickTags"></div>
           </div>
 
           <div class="form-group-item">
             <label>Current Warehouse Stock</label>
-            <div id="liveStockDisplay" style="font-family:var(--font-mono); font-weight:700; color:var(--text-dim); padding:0.4rem 0;">Select a SKU above</div>
+            <div id="liveStockDisplay"
+              style="font-family:var(--font-mono); font-weight:700; color:var(--text-dim); padding:0.4rem 0;">Select a
+              SKU above</div>
           </div>
 
           <div class="form-group-item">
@@ -1592,7 +1815,8 @@
 
           <div class="form-group-item">
             <label>Audit Reason</label>
-            <input type="text" id="invReasonField" class="form-input-ctrl" placeholder="e.g. Annual physical count verification">
+            <input type="text" id="invReasonField" class="form-input-ctrl"
+              placeholder="e.g. Annual physical count verification">
           </div>
 
           <button class="btn-submit-draft" style="margin-top:0.75rem;" onclick="submitInventoryCorrection()">
@@ -1608,14 +1832,16 @@
         <div class="operations-card">
           <div class="op-title">
             <svg style="width:24px; height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <polyline points="23 4 23 10 17 10"/>
-              <polyline points="1 20 1 14 7 14"/>
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              <polyline points="23 4 23 10 17 10" />
+              <polyline points="1 20 1 14 7 14" />
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
             </svg>
             <span>Supplier Catalogue Automated Sync</span>
           </div>
           <p class="op-description">
-            Executes <code>POST /api/sync/supplier/</code>. Automatically handles cursor pagination, HTTP 429 <code>Retry-After</code> headers, 5xx exponential backoff, SHA-256 updated timestamp deduplication, and atomic all-or-nothing rollback.
+            Executes <code>POST /api/sync/supplier/</code>. Automatically handles cursor pagination, HTTP 429
+            <code>Retry-After</code> headers, 5xx exponential backoff, SHA-256 updated timestamp deduplication, and
+            atomic all-or-nothing rollback.
           </p>
 
           <button id="btnTriggerSupplierSync" class="btn-submit-draft" onclick="triggerSupplierSync()">
@@ -1624,7 +1850,9 @@
 
           <!-- Sync Metrics -->
           <div id="syncMetricsBox" style="display:none; margin-top:2rem;">
-            <div style="font-size:0.8rem; font-weight:700; color:var(--accent-orange-bright); text-transform:uppercase; letter-spacing:0.06em;">Sync Execution Summary</div>
+            <div
+              style="font-size:0.8rem; font-weight:700; color:var(--accent-orange-bright); text-transform:uppercase; letter-spacing:0.06em;">
+              Sync Execution Summary</div>
             <div class="sync-stat-matrix">
               <div class="stat-tile">
                 <div id="statCreated" class="stat-val" style="color:var(--color-emerald);">0</div>
@@ -1676,11 +1904,13 @@
       <button class="modal-close-cross" onclick="closeOrderModal()">&times;</button>
 
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-        <span id="modalOrderNo" style="font-family:var(--font-mono); font-size:1.35rem; font-weight:800; color:var(--accent-orange-bright);"></span>
+        <span id="modalOrderNo"
+          style="font-family:var(--font-mono); font-size:1.35rem; font-weight:800; color:var(--accent-orange-bright);"></span>
         <span id="modalStatusBadge" class="order-state-pill"></span>
       </div>
       <div style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1.25rem;">
-        Dealer: <strong id="modalDealerName" style="color:var(--text-bright);"></strong> &middot; Created: <span id="modalOrderDate"></span>
+        Dealer: <strong id="modalDealerName" style="color:var(--text-bright);"></strong> &middot; Created: <span
+          id="modalOrderDate"></span>
       </div>
 
       <!-- Stepper Track -->
@@ -1707,7 +1937,9 @@
       </div>
 
       <!-- Error Shortfall Banner -->
-      <div id="modalShortfallAlert" style="display:none; background:var(--color-rose-soft); border:1px solid var(--color-rose); border-radius:8px; padding:0.9rem 1.15rem; color:var(--color-rose); font-size:0.88rem; font-weight:600; margin-bottom:1.35rem;"></div>
+      <div id="modalShortfallAlert"
+        style="display:none; background:var(--color-rose-soft); border:1px solid var(--color-rose); border-radius:8px; padding:0.9rem 1.15rem; color:var(--color-rose); font-size:0.88rem; font-weight:600; margin-bottom:1.35rem;">
+      </div>
 
       <!-- Lines Table -->
       <div style="border:1px solid var(--border-subtle); border-radius:9px; overflow:hidden; margin-bottom:1.35rem;">
@@ -1727,9 +1959,12 @@
 
       <!-- Totals -->
       <div class="cart-totals-box">
-        <div class="totals-row"><span>Subtotal:</span><strong id="modalSubtotalVal" style="font-family:var(--font-mono);">₹0.00</strong></div>
-        <div class="totals-row"><span>GST Total (18%):</span><strong id="modalTaxVal" style="font-family:var(--font-mono);">₹0.00</strong></div>
-        <div class="totals-row grand-total"><span>Grand Total:</span><strong id="modalGrandTotalVal" style="color:var(--accent-orange-bright); font-family:var(--font-mono);">₹0.00</strong></div>
+        <div class="totals-row"><span>Subtotal:</span><strong id="modalSubtotalVal"
+            style="font-family:var(--font-mono);">₹0.00</strong></div>
+        <div class="totals-row"><span>GST Total (18%):</span><strong id="modalTaxVal"
+            style="font-family:var(--font-mono);">₹0.00</strong></div>
+        <div class="totals-row grand-total"><span>Grand Total:</span><strong id="modalGrandTotalVal"
+            style="color:var(--accent-orange-bright); font-family:var(--font-mono);">₹0.00</strong></div>
       </div>
 
       <!-- Actions Bar -->
@@ -2334,4 +2569,5 @@
     window.onload = init;
   </script>
 </body>
+
 </html>
