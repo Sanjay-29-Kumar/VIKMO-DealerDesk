@@ -10,8 +10,8 @@
 - **Part E · Frontend Dealer Portal (Bonus):** Interactive single-page dashboard for browsing catalog parts, calculating real-time line GST, submitting and tracking orders, adjusting warehouse stock, and triggering supplier sync
 - **Docker Support (Bonus):** Containerized deployment (`Dockerfile`, `docker-compose.yml`) for running the application and mock supplier in isolated environments (completely optional; standard grader runs directly via Python)
 
-**Video Walkthrough Link:** [https://youtu.be/placeholder-video-link](https://youtu.be/placeholder-video-link) *(Placeholder: replace with your unlisted YouTube, Loom, or Drive link)*  
-**Public Repository Link:** [https://github.com/placeholder-user/VIKMO-DealerDesk](https://github.com/placeholder-user/VIKMO-DealerDesk) *(Placeholder: update after pushing to GitHub)*
+**Video Walkthrough Link:** [https://youtu.be/VyirJ0hWPrc](https://youtu.be/VyirJ0hWPrc)  
+**Public Repository Link:** [https://github.com/Sanjay-29-Kumar/VIKMO-DealerDesk](https://github.com/Sanjay-29-Kumar/VIKMO-DealerDesk)
 
 ---
 
